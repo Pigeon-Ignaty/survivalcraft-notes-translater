@@ -1,0 +1,8 @@
+.vs/
+x64/
+src/
+*.sln
+*.vcxproj
+*.vcxproj.filters
+*vcxproj.user
+nppBackup/
