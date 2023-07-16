@@ -6,3 +6,5 @@ src/
 *.vcxproj.filters
 *vcxproj.user
 nppBackup/
+.xml
+.musicxml
