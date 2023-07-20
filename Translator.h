@@ -2,7 +2,7 @@
 #include <string>
 #include <iostream>
 #include <algorithm>
-#include "MusicXMLReader.h"
+//#include "MusicXMLReader.h"
 using namespace std;
 
 class Translator
@@ -13,7 +13,7 @@ class Translator
 	vector <int> converted_octaves_sequence;
 	int type_instrument = 0;
 public:
-	Translator( MusicXMLReader& reader);
+	//Translator( MusicXMLReader& reader);
 	Translator(vector<char>& notes, vector<string>& octaves, vector<int>& semitone, vector<int>& duration, vector<int>& league, int fraction_numerator,int denominator_fraction,int bpm, int chromatic);
 	int switch_hex_notes(char ch, int semitone);
 	void notes_f( vector<char>& notes, vector<int>& semitone, int chromatic);

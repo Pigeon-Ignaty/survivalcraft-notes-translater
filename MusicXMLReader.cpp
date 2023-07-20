@@ -50,7 +50,7 @@ int MusicXMLReader::accidental_code(string s) {
     if (s == "natural") return -1;
     return 0;
 }
-void MusicXMLReader::MusicPartReader(const char* NamePart) {
+void MusicXMLReader::MusicPartWriter(const char* NamePart) {
     // Анализируем каждый measure
 
     XMLElement* pRootElement = doc.RootElement(); // корневой каталог
@@ -127,7 +127,7 @@ void MusicXMLReader::MusicPartReader(const char* NamePart) {
             }
 
 
-            cout << "Measure (такт): " << count_meaure << endl;
+            cout << "Measure (такт): " << count_measure << endl;
             if (fifths_tag != NULL) {
                 fifths = atoi(fifths_tag->GetText());
                 cout << "\tЗнаки: " << fifths << endl;
@@ -253,7 +253,7 @@ void MusicXMLReader::MusicPartReader(const char* NamePart) {
                 cout << endl;
             }
             measure_tag = measure_tag->NextSiblingElement("measure");//след элемент по measure
-            count_meaure++;
+            count_measure++;
         }
 
 

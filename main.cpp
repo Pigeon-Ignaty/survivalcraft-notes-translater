@@ -10,10 +10,10 @@ using namespace std;
 
 
 int main() {
+    //system("chcp 1251");
     setlocale(LC_ALL, "RU");
     MusicXMLReader xml("123.xml");
-    xml.MusicPartReader("P2");
-    Translator music(v_notes, v_octaves, v_semitone, v_duration, v_league, beats, beat_type, bpm, 0);
+    //Translator music(xml);
 
     return 0;
 }

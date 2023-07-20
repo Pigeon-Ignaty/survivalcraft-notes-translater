@@ -1,9 +1,9 @@
 #include "Translator.h"
-Translator::Translator( MusicXMLReader& reader) {
-	type_instrument = 2;
-	notes_f(reader.v_notes, reader.v_semitone, reader.chromatic);
-	octaves_f(converted_notes, reader.v_octaves);
-}
+//Translator::Translator( MusicXMLReader& reader) {
+//	type_instrument = 2;
+//	notes_f(reader.v_notes, reader.v_semitone, reader.chromatic);
+//	octaves_f(converted_notes, reader.v_octaves);
+//}
 Translator::Translator(vector<char>& notes, vector<string>& octaves, vector<int>& semitone, vector<int>& duration, vector<int>& league, int fraction_numerator, int denominator_fraction, int bpm, int chromatic) {
 	type_instrument = 2;
 	notes_f(notes, semitone, chromatic);
@@ -15,7 +15,7 @@ Translator::Translator(vector<char>& notes, vector<string>& octaves, vector<int>
 	show_octaves(converted_octaves_sequence);
 
 }
-void Translator::notes_f(const vector<char>& notes, vector<int>& semitone, int chromatic) {
+void Translator::notes_f( vector<char>& notes, vector<int>& semitone, int chromatic) {
 	if (notes.size() != semitone.size()) {
 		cout << "Error: vectors have different sizes" << endl;
 	}
@@ -33,7 +33,7 @@ void Translator::notes_f(const vector<char>& notes, vector<int>& semitone, int c
 	}
 	cout << endl;
 }
-void Translator::octaves_f(const vector<int>& converted_notes, vector<string>& octaves) {
+void Translator::octaves_f( vector<int>& converted_notes, vector<string>& octaves) {
 	//cout << "ќктавы в octaves_f:" << endl;
 
 	for (int i = 0; i < octaves.size(); i++) {
