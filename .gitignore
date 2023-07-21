@@ -8,3 +8,5 @@ src/
 nppBackup/
 .xml
 .musicxml
+*.musicxml
+*.xml

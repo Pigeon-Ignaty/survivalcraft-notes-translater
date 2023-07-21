@@ -136,7 +136,7 @@ int Translator::switch_hex_notes( char ch, int semitone) {
 	case 'G': return 7 + semitone; //соль
 	case 'A': return 9 + semitone; //ля
 	case 'B': return 11 + semitone;//си
-	default: return 15;
+	default: return 15; //пауза
 	}
 }
 void Translator::show_notes(vector <int>& converted_notes_sequence) {
