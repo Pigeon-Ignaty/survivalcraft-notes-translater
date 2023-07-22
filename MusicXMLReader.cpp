@@ -4,7 +4,8 @@ MusicXMLReader::MusicXMLReader(const char* name) {
     setlocale(LC_ALL, "RU");
     doc.LoadFile(name);
     if (doc.Error()) {
-       throw runtime_error("ѕроизошла ошибка, файл содержит ошибку"); // если файл содержит ошибку
+        cout << doc.ErrorLineNum();       
+        throw runtime_error("ѕроизошла ошибка, файл содержит ошибку"); // если файл содержит ошибку
     }
         XMLElement* pRootElement = doc.RootElement(); // корневой каталог
         if (NULL != pRootElement) { // если не пустой
@@ -295,13 +296,13 @@ void MusicXMLReader::MusicPartWriter(const char* NamePart) {
 
  int MusicXMLReader::Translation() {
      type_instrument = 2; // тип инструмента
-     notes_f(v_notes, v_semitone, chromatic);
-     octaves_f(converted_notes, v_octaves);
-     convert_to_sequence(converted_notes, v_duration, v_league, 0);//ноты
-     convert_to_sequence(converted_octaves, v_duration, v_league, 1);//октавы
-     show_information_about_composition(v_duration, beats, beat_type, bpm);
-     show_notes(converted_notes_sequence);
-     show_octaves(converted_octaves_sequence);
+     notes_f(v_notes, v_semitone, chromatic);//перевод из нот CDEFGAB в hex представление в survivalcraft
+     octaves_f(converted_notes, v_octaves); //перевод октавы в формат survivalcraft, в том числе обрезка по октавам
+     convert_to_sequence(converted_notes, v_duration, v_league, 0);// перевод в последовательность нот в зависимости от длительности
+     convert_to_sequence(converted_octaves, v_duration, v_league, 1);//перевод в последовательность октав в зависимости от длительности
+     show_information_about_composition(v_duration, beats, beat_type, bpm);//рекомендуема€ частота генератора, не работает правильно
+     show_notes(converted_notes_sequence); //вывод нот с делением на строки длиной 256 символов
+     show_octaves(converted_octaves_sequence);//вывод октав с делением на строки длиной 256 символов
      return 0;
 
  }
@@ -313,14 +314,15 @@ void MusicXMLReader::MusicPartWriter(const char* NamePart) {
      cout << "Ќоты в notes_f:" << endl;
      for (int i = 0; i < semitone.size(); i++) {
          semitone[i] = semitone[i] + chromatic;
-         if (switch_hex_notes(notes[i], semitone[i]) < 0) { //??
-             converted_notes.push_back(12 + switch_hex_notes(notes[i], semitone[i]));
+         int hex_notes = switch_hex_notes(notes[i], semitone[i]);
+         if (hex_notes < 0) { //??
+             converted_notes.push_back(12 + hex_notes);
          }
          else {
-             converted_notes.push_back(switch_hex_notes(notes[i], semitone[i]));
+             converted_notes.push_back(hex_notes);
 
          }
-         cout << hex << uppercase << switch_hex_notes(notes[i], semitone[i]);
+         cout << hex << uppercase << hex_notes;
      }
      cout << endl;
  }
@@ -376,38 +378,19 @@ void MusicXMLReader::MusicPartWriter(const char* NamePart) {
  }
 
  void MusicXMLReader::convert_to_sequence(vector<int>& converted, vector<int>& duration, vector<int>& league, int t) {
-     /*int min_duration = *min_element(duration.begin(), duration.end());
-     int max_duration = *max_element(duration.begin(), duration.end());
-     cout << dec << "max" << max_duration << endl;
-     cout << dec << "min" << min_duration << endl;*/
 
-     /*for (int i = 0; i < duration.size(); i++) {
-         duration[i] = duration[i] / min_duration;
-     }*/
-     /*cout << endl <<"ƒлительности" << endl;
-     for (int i = 0; i < duration.size(); i++) {
-         cout << dec << duration[i] << " ";
-     }*/
-     /*cout << min_duration << "\t" << max_duration << endl;*/
      if (converted.size() != duration.size()) {
          cout << "Error: vectors have different sizes" << endl;
      }
-     //cout << endl << "ѕоследовательности" << endl;
      try {
-         if (!t) {
+         if (!t) {//если ноты
              for (int i = 0; i < duration.size(); i++) {
-                 //if (i == 0) cout << converted_notes[i];
-                 //cout << "F";
                  (print_amount(converted[i], duration[i], league[i], converted_notes_sequence));
-                 //cout << i;
              }
          }
-         else {
+         else { // если октавы
              for (int i = 0; i < duration.size(); i++) {
-                 //if (i == 0) cout << converted_notes[i];
-                 //cout << "F";
                  (print_amount(converted[i], duration[i], league[i], converted_octaves_sequence));
-                 //cout << i;
              }
          }
 

@@ -2,6 +2,7 @@
 #include <iostream>
 #include <algorithm>
 #include <vector>
+#include <iomanip>
 #include "Z:\VS\MidiApp\MidiAPP\tiny\tinyxml2.h"
 using namespace std;
 
@@ -56,7 +57,7 @@ class MusicXMLReader
     void show_notes(vector <int>& converted_notes);
     void show_octaves(vector <int>& converted_octaves);
     int switch_hex_notes(char ch, int semitone);
-    void print_amount(int note, int duration, int league, vector <int>& notes_or_octaves);
+    void print_amount(int note, int duration, int league, vector <int>& notes_or_octaves); //формирование последовательности нот или октав с учётом длительности и лиг
 
 public:
     MusicXMLReader(const char*); //конструктор открывающий musicxml и считывающий партии
