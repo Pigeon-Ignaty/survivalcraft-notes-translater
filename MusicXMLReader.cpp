@@ -56,208 +56,228 @@ void MusicXMLReader::MusicPartWriter(const char* NamePart) {
 
     XMLElement* pRootElement = doc.RootElement(); // корневой каталог
     if (NULL != pRootElement) { // если не пустой
-    
-        XMLElement* measure_tag = pRootElement->FirstChildElement("part")->FirstChildElement("measure");
+        //----------------------
+        XMLElement* part_id_tag = pRootElement->FirstChildElement("part");
+        XMLElement* measure_tag = nullptr;
+        while (part_id_tag) {
+            const char* partId = part_id_tag->Attribute("id");
+            if (partId && std::string(partId) == NamePart) {
+                measure_tag = part_id_tag->FirstChildElement("measure");
 
-        while (measure_tag) { // если не пустой
-            XMLElement* attributes_tag = nullptr;
-            XMLElement* key_tag = nullptr;
-            XMLElement* fifths_tag = nullptr;
-            XMLElement* time_tag = nullptr;
-            XMLElement* beats_tag = nullptr;
-            XMLElement* beat_type_tag = nullptr;
-            XMLElement* clef_tag = nullptr;
-            XMLElement* sign_tag = nullptr;
-            XMLElement* line_tage = nullptr;
-            XMLElement* transpose_tag = nullptr;
-            XMLElement* chromatic_tag = nullptr;
-            XMLElement* direction_tag = nullptr;
-            XMLElement* direction_type_tag = nullptr;
-            XMLElement* metronome_tag = nullptr;
-            XMLElement* beat_unit_tag = nullptr;
-            XMLElement* per_minute_tag = nullptr;
+                while (measure_tag) { // если не пустой
+                    XMLElement* attributes_tag = nullptr;
+                    XMLElement* divisions_tag = nullptr;
+                    XMLElement* key_tag = nullptr;
+                    XMLElement* fifths_tag = nullptr;
+                    XMLElement* time_tag = nullptr;
+                    XMLElement* beats_tag = nullptr;
+                    XMLElement* beat_type_tag = nullptr;
+                    XMLElement* clef_tag = nullptr;
+                    XMLElement* sign_tag = nullptr;
+                    XMLElement* line_tage = nullptr;
+                    XMLElement* transpose_tag = nullptr;
+                    XMLElement* chromatic_tag = nullptr;
+                    XMLElement* direction_tag = nullptr;
+                    XMLElement* direction_type_tag = nullptr;
+                    XMLElement* metronome_tag = nullptr;
+                    XMLElement* beat_unit_tag = nullptr;
+                    XMLElement* per_minute_tag = nullptr;
 
-            if (measure_tag->FirstChildElement("attributes") != NULL) {
-                attributes_tag = measure_tag->FirstChildElement("attributes");
-                if (attributes_tag->FirstChildElement("key") != NULL) {
-                    key_tag = attributes_tag->FirstChildElement("key");
-                    if (key_tag->FirstChildElement("fifths") != NULL) {
-                        fifths_tag = key_tag->FirstChildElement("fifths");
-                    }
-                }
-                if (attributes_tag->FirstChildElement("time") != NULL) {
-                    time_tag = attributes_tag->FirstChildElement("time");
-                    if (time_tag->FirstChildElement("beats") != NULL) {
-                        beats_tag = time_tag->FirstChildElement("beats");
-                    }
-                    if (time_tag->FirstChildElement("beat-type") != NULL) {
-                        beat_type_tag = time_tag->FirstChildElement("beat-type");
-                    }
-                }
-                if (attributes_tag->FirstChildElement("clef") != NULL) {
-                    clef_tag = attributes_tag->FirstChildElement("clef");
-                    if (clef_tag->FirstChildElement("sign") != NULL) {
-                        sign_tag = clef_tag->FirstChildElement("sign");
-                    }
-                    if (clef_tag->FirstChildElement("line") != NULL) {
-                        line_tage = clef_tag->FirstChildElement("line");
-                    }
-                }
-                if (attributes_tag->FirstChildElement("transpose") != NULL) {
-                    transpose_tag = attributes_tag->FirstChildElement("transpose");
-                    if (transpose_tag->FirstChildElement("chromatic") != NULL) {
-                        chromatic = atoi(transpose_tag->FirstChildElement("chromatic")->GetText());
-                    }
-                }
-            }
-            if (measure_tag->FirstChildElement("direction") != NULL) {
-                direction_tag = measure_tag->FirstChildElement("direction");
-                if (direction_tag->FirstChildElement("direction-type") != NULL) {
-                    direction_type_tag = direction_tag->FirstChildElement("direction-type");
-                    if (direction_type_tag->FirstChildElement("metronome") != NULL) {
-                        metronome_tag = direction_type_tag->FirstChildElement("metronome");
-                        if (metronome_tag->FirstChildElement("beat-unit") != NULL) {
-                            beat_unit_tag = metronome_tag->FirstChildElement("beat-unit");
+                    if (measure_tag->FirstChildElement("attributes") != NULL) {
+                        attributes_tag = measure_tag->FirstChildElement("attributes");
+                        if (attributes_tag->FirstChildElement("divisions") != NULL) {
+                            divisions_tag = attributes_tag->FirstChildElement("divisions");
+                            divisions = atoi(divisions_tag->GetText());
                         }
-                        if (metronome_tag->FirstChildElement("per-minute") != NULL) {
-                            per_minute_tag = metronome_tag->FirstChildElement("per-minute");
-                            bpm = atoi(per_minute_tag->GetText());
+                        if (attributes_tag->FirstChildElement("key") != NULL) {
+                            key_tag = attributes_tag->FirstChildElement("key");
+                            if (key_tag->FirstChildElement("fifths") != NULL) {
+                                fifths_tag = key_tag->FirstChildElement("fifths");
+                            }
+                        }
+                        if (attributes_tag->FirstChildElement("time") != NULL) {
+                            time_tag = attributes_tag->FirstChildElement("time");
+                            if (time_tag->FirstChildElement("beats") != NULL) {
+                                beats_tag = time_tag->FirstChildElement("beats");
+                            }
+                            if (time_tag->FirstChildElement("beat-type") != NULL) {
+                                beat_type_tag = time_tag->FirstChildElement("beat-type");
+                            }
+                        }
+                        if (attributes_tag->FirstChildElement("clef") != NULL) {
+                            clef_tag = attributes_tag->FirstChildElement("clef");
+                            if (clef_tag->FirstChildElement("sign") != NULL) {
+                                sign_tag = clef_tag->FirstChildElement("sign");
+                            }
+                            if (clef_tag->FirstChildElement("line") != NULL) {
+                                line_tage = clef_tag->FirstChildElement("line");
+                            }
+                        }
+                        if (attributes_tag->FirstChildElement("transpose") != NULL) {
+                            transpose_tag = attributes_tag->FirstChildElement("transpose");
+                            if (transpose_tag->FirstChildElement("chromatic") != NULL) {
+                                chromatic = atoi(transpose_tag->FirstChildElement("chromatic")->GetText());
+                            }
                         }
                     }
-                }
-            }
-
-
-            cout << "Measure (такт): " << count_measure << endl;
-            if (fifths_tag != NULL) {
-                fifths = atoi(fifths_tag->GetText());
-                cout << "\t«наки: " << fifths << endl;
-            }
-
-            if (beats_tag != NULL) {
-                beats = atoi(beats_tag->GetText());
-                cout << "\tдолей в числителе тактового размера: " << beats_tag->GetText() << endl;
-            }
-
-            if (beat_type_tag != NULL) {
-                beat_type = atoi(beat_type_tag->GetText());
-                cout << "\t долей в знаменателе тактового размера: " << beat_type_tag->GetText() << endl;
-            }
-
-            if (sign_tag != NULL) {
-                sign = string(sign_tag->GetText());
-                cout << "\tsign (знак): " << sign << endl;
-            }
-
-            if (line_tage != NULL) {
-                line = atoi(line_tage->GetText());
-                cout << "\tline (номер дл€ знака): " << line << endl;
-            }
-
-            //////„итаем ноты
-            XMLElement* note_tag = measure_tag->FirstChildElement("note");
-            while (note_tag) { // цикл по  нотам в measure
-                if (note_tag->FirstChildElement("pitch") != NULL) { //если нота, то вывести ноту и октаву
-                    XMLElement* step_tag = note_tag->FirstChildElement("pitch")->FirstChildElement("step"); //нота
-                    XMLElement* alter_tag = note_tag->FirstChildElement("pitch")->FirstChildElement("alter"); //отклонение на полутон
-                    XMLElement* octave_tag = note_tag->FirstChildElement("pitch")->FirstChildElement("octave"); //октава
-                    XMLElement* notations = nullptr;
-
-                    if (step_tag != NULL) {
-                        cout << "v_notes " << v_notes.size() - 1 << "\t"; // дл€ консоли
-                        cout << "\tstep: " << step_tag->GetText() << endl; // нота
-                        v_notes.push_back(step_tag->GetText()[0]);
-                        v_league.push_back(0);
+                    if (measure_tag->FirstChildElement("direction") != NULL) {
+                        direction_tag = measure_tag->FirstChildElement("direction");
+                        if (direction_tag->FirstChildElement("direction-type") != NULL) {
+                            direction_type_tag = direction_tag->FirstChildElement("direction-type");
+                            if (direction_type_tag->FirstChildElement("metronome") != NULL) {
+                                metronome_tag = direction_type_tag->FirstChildElement("metronome");
+                                if (metronome_tag->FirstChildElement("beat-unit") != NULL) {
+                                    beat_unit_tag = metronome_tag->FirstChildElement("beat-unit");
+                                }
+                                if (metronome_tag->FirstChildElement("per-minute") != NULL) {
+                                    per_minute_tag = metronome_tag->FirstChildElement("per-minute");
+                                    bpm = atoi(per_minute_tag->GetText());
+                                }
+                            }
+                        }
                     }
-                    if (alter_tag != NULL) {
-                        alter = atoi(alter_tag->GetText());
-                        cout << "v_semitone " << v_semitone.size() - 1 << "\t";
 
-                        cout << "\talter: " << alter_tag->GetText() << endl;
-                        v_semitone.push_back(atoi(alter_tag->GetText()));
 
+                    cout << "Measure (такт): " << count_measure << endl;
+                    if (fifths_tag != NULL) {
+                        fifths = atoi(fifths_tag->GetText());
+                        cout << "\t«наки: " << fifths << endl;
                     }
-                    else { //если нет alter
-                        cout << "v_semitone " << v_semitone.size() - 1 << "\t";
 
-                        v_semitone.push_back(0);
-
+                    if (beats_tag != NULL) {
+                        beats = atoi(beats_tag->GetText());
+                        cout << "\tдолей в числителе тактового размера: " << beats_tag->GetText() << endl;
                     }
-                    if (octave_tag != NULL) {
-                        octave = atoi(octave_tag->GetText());
-                        cout << "\toctave: " << octave_tag->GetText() << endl;
-                        v_octaves.push_back(octave_tag->GetText());
 
+                    if (beat_type_tag != NULL) {
+                        beat_type = atoi(beat_type_tag->GetText());
+                        cout << "\t долей в знаменателе тактового размера: " << beat_type_tag->GetText() << endl;
                     }
-                }
-                XMLElement* rest_tag = note_tag->FirstChildElement("rest"); //ќпределение паузы
-                if (rest_tag != NULL) {
-                    rest = rest_tag->Name();
-                    cout << "\t" << rest_tag->Name() << endl;
-                    v_notes.push_back('r');
-                    v_octaves.push_back("n");
-                    v_semitone.push_back(0);
-                    v_league.push_back(0);
 
-                    cout << "v_semitone " << v_semitone.size() - 1 << "\t";
-                    cout << "v_notes " << v_notes.size() - 1 << "\t";
+                    if (sign_tag != NULL) {
+                        sign = string(sign_tag->GetText());
+                        cout << "\tsign (знак): " << sign << endl;
+                    }
 
-                }
-                XMLElement* duration_tag = note_tag->FirstChildElement("duration"); //ќпределение длительности
-                if (duration_tag != NULL) {//длительность
-                    duration = atoi(duration_tag->GetText());
-                    cout << "\tduration: " << duration_tag->GetText() << endl;
-                    v_duration.push_back(duration);
-                }
+                    if (line_tage != NULL) {
+                        line = atoi(line_tage->GetText());
+                        cout << "\tline (номер дл€ знака): " << line << endl;
+                    }
 
-                if (note_tag->FirstChildElement("notations") != NULL) {
-                    if (note_tag->FirstChildElement("notations")->FirstChildElement("tied") != NULL) {
-                        if (note_tag->FirstChildElement("notations")->FirstChildElement("tied")->Attribute("type") != NULL) {
-                            XMLElement* tied_tag = note_tag->FirstChildElement("notations")->FirstChildElement("tied");
-                            //tied = tied_tag->Attribute("type");
-                            int count_tied = 0;
-                            while (tied_tag) {
-                                if (string(tied_tag->Attribute("type")) == "stop") count_tied++;
-                                //cout << "Attribute " << tied_tag->Attribute("type") << endl;
-                                if (string(tied_tag->Attribute("type")) == "start") count_tied += 2;
-                                //cout << "\ttied: " << count_tied << endl;
+                    //////„итаем ноты
+                    XMLElement* note_tag = measure_tag->FirstChildElement("note");
+                    while (note_tag) { // цикл по  нотам в measure
+                        if (note_tag->FirstChildElement("pitch") != NULL) { //если нота, то вывести ноту и октаву
+                            XMLElement* step_tag = note_tag->FirstChildElement("pitch")->FirstChildElement("step"); //нота
+                            XMLElement* alter_tag = note_tag->FirstChildElement("pitch")->FirstChildElement("alter"); //отклонение на полутон
+                            XMLElement* octave_tag = note_tag->FirstChildElement("pitch")->FirstChildElement("octave"); //октава
+                            XMLElement* notations = nullptr;
 
-                                tied_tag = tied_tag->NextSiblingElement("tied");//след элемент по tied
+                            if (step_tag != NULL) {
+                                cout << "v_notes " << v_notes.size() - 1 << "\t"; // дл€ консоли
+                                cout << "\tstep: " << step_tag->GetText() << endl; // нота
+                                v_notes.push_back(step_tag->GetText()[0]);
+                                v_league.push_back(0);
+                            }
+                            if (alter_tag != NULL) {
+                                alter = atoi(alter_tag->GetText());
+                                cout << "v_semitone " << v_semitone.size() - 1 << "\t";
+
+                                cout << "\talter: " << alter_tag->GetText() << endl;
+                                v_semitone.push_back(atoi(alter_tag->GetText()));
 
                             }
-                            v_league[v_league.size() - 1] = count_tied;
+                            else { //если нет alter
+                                cout << "v_semitone " << v_semitone.size() - 1 << "\t";
 
-                            count_tied = 0;
+                                v_semitone.push_back(0);
 
+                            }
+                            if (octave_tag != NULL) {
+                                octave = atoi(octave_tag->GetText());
+                                cout << "\toctave: " << octave_tag->GetText() << endl;
+                                v_octaves.push_back(octave_tag->GetText());
+
+                            }
+                        }
+                        XMLElement* rest_tag = note_tag->FirstChildElement("rest"); //ќпределение паузы
+                        if (rest_tag != NULL) {
+                            rest = rest_tag->Name();
+                            cout << "\t" << rest_tag->Name() << endl;
+                            v_notes.push_back('r');
+                            v_octaves.push_back("n");
+                            v_semitone.push_back(0);
+                            v_league.push_back(0);
+
+                            cout << "v_semitone " << v_semitone.size() - 1 << "\t";
+                            cout << "v_notes " << v_notes.size() - 1 << "\t";
+
+                        }
+                        XMLElement* duration_tag = note_tag->FirstChildElement("duration"); //ќпределение длительности
+                        if (duration_tag != NULL) {//длительность
+                            duration = atoi(duration_tag->GetText());
+                            cout << "\tduration: " << duration_tag->GetText() << endl;
+                            v_duration.push_back(duration);
+                        }
+
+                        if (note_tag->FirstChildElement("notations") != NULL) {
+                            if (note_tag->FirstChildElement("notations")->FirstChildElement("tied") != NULL) {
+                                if (note_tag->FirstChildElement("notations")->FirstChildElement("tied")->Attribute("type") != NULL) {
+                                    XMLElement* tied_tag = note_tag->FirstChildElement("notations")->FirstChildElement("tied");
+                                    //tied = tied_tag->Attribute("type");
+                                    int count_tied = 0;
+                                    while (tied_tag) {
+                                        if (string(tied_tag->Attribute("type")) == "stop") count_tied++;
+                                        //cout << "Attribute " << tied_tag->Attribute("type") << endl;
+                                        if (string(tied_tag->Attribute("type")) == "start") count_tied += 2;
+                                        //cout << "\ttied: " << count_tied << endl;
+
+                                        tied_tag = tied_tag->NextSiblingElement("tied");//след элемент по tied
+
+                                    }
+                                    v_league[v_league.size() - 1] = count_tied;
+
+                                    count_tied = 0;
+
+                                }
+
+
+                            }
+                        }
+                        cout << "v_league " << v_league.size() - 1 << "\t";
+
+                        XMLElement* voice_tag = note_tag->FirstChildElement("voice"); //ќпределение голоса
+                        if (voice_tag != NULL) {//ѕроверка паузы
+                            voice = atoi(voice_tag->GetText());
+                            cout << "\tvoice: " << voice_tag->GetText() << endl;
                         }
 
 
+                        XMLElement* accidental_tag = note_tag->FirstChildElement("accidental"); //ќпределение полутона
+                        if (accidental_tag != NULL) {//ѕроверка паузы
+                            accidental = atoi(accidental_tag->GetText());
+                            v_semitone[v_semitone.size() - 1] = accidental_code(accidental_tag->GetText());
+                            cout << "v_semitone " << v_semitone.size() - 1 << "\t";
+                            cout << "\taccidental: " << accidental_tag->GetText() << endl;
+                        }
+                        note_tag = note_tag->NextSiblingElement("note");//след элемент по нотам
+                        cout << endl;
                     }
-                }
-                cout << "v_league " << v_league.size() - 1 << "\t";
-
-                XMLElement* voice_tag = note_tag->FirstChildElement("voice"); //ќпределение голоса
-                if (voice_tag != NULL) {//ѕроверка паузы
-                    voice = atoi(voice_tag->GetText());
-                    cout << "\tvoice: " << voice_tag->GetText() << endl;
+                    measure_tag = measure_tag->NextSiblingElement("measure");//след элемент по measure
+                    count_measure++;
                 }
 
+                // ѕереход к следующему элементу <part>
 
-                XMLElement* accidental_tag = note_tag->FirstChildElement("accidental"); //ќпределение полутона
-                if (accidental_tag != NULL) {//ѕроверка паузы
-                    accidental = atoi(accidental_tag->GetText());
-                    v_semitone[v_semitone.size() - 1] = accidental_code(accidental_tag->GetText());
-                    cout << "v_semitone " << v_semitone.size() - 1 << "\t";
-                    cout << "\taccidental: " << accidental_tag->GetText() << endl;
-                }
-                note_tag = note_tag->NextSiblingElement("note");//след элемент по нотам
-                cout << endl;
+                XMLElement* measure_tag = pRootElement->FirstChildElement("part")->FirstChildElement("measure");
+                break;
             }
-            measure_tag = measure_tag->NextSiblingElement("measure");//след элемент по measure
-            count_measure++;
+            part_id_tag = part_id_tag->NextSiblingElement("part");
+       
+        //----------------
+
+        
         }
-
-
 
         }
  }
@@ -298,6 +318,7 @@ void MusicXMLReader::MusicPartWriter(const char* NamePart) {
      type_instrument = 2; // тип инструмента
      notes_f(v_notes, v_semitone, chromatic);//перевод из нот CDEFGAB в hex представление в survivalcraft
      octaves_f(converted_notes, v_octaves); //перевод октавы в формат survivalcraft, в том числе обрезка по октавам
+     calculation_duration();//вычисл€ет правильные длительности нот
      convert_to_sequence(converted_notes, v_duration, v_league, 0);// перевод в последовательность нот в зависимости от длительности
      convert_to_sequence(converted_octaves, v_duration, v_league, 1);//перевод в последовательность октав в зависимости от длительности
      show_information_about_composition(v_duration, beats, beat_type, bpm);//рекомендуема€ частота генератора, не работает правильно
@@ -377,11 +398,13 @@ void MusicXMLReader::MusicPartWriter(const char* NamePart) {
      }
  }
 
- void MusicXMLReader::convert_to_sequence(vector<int>& converted, vector<int>& duration, vector<int>& league, int t) {
+ void MusicXMLReader::convert_to_sequence(vector<int>& converted, vector<float>& duration, vector<int>& league, int t) {
 
      if (converted.size() != duration.size()) {
          cout << "Error: vectors have different sizes" << endl;
      }
+     
+
      try {
          if (!t) {//если ноты
              for (int i = 0; i < duration.size(); i++) {
@@ -418,7 +441,7 @@ void MusicXMLReader::MusicPartWriter(const char* NamePart) {
 
  }
 
- void MusicXMLReader::show_information_about_composition(vector<int>& duration, int fraction_numerator, int denominator_fraction, int bpm) {
+ void MusicXMLReader::show_information_about_composition(vector<float>& duration, int fraction_numerator, int denominator_fraction, int bpm) {
      float min_duration = *min_element(duration.begin(), duration.end());
      float max_duration = *max_element(duration.begin(), duration.end());
      float relationship_bpm;
@@ -472,3 +495,28 @@ void MusicXMLReader::MusicPartWriter(const char* NamePart) {
      }
      cout << endl;
  }
+
+ void MusicXMLReader::calculation_duration() {
+
+     if (divisions != 1) { //если не 1, иначе нет смысла
+         for (int i = 0; i < v_duration.size(); i++) { //делим каждый элемент на divisions
+             
+             v_duration[i] = v_duration[i] / divisions;
+             //cout << v_duration[i] << " ";
+         }
+         cout << endl;
+         auto minElement = min_element(v_duration.begin(), v_duration.end()); //находим минимальный элемент
+         float min = *minElement;
+         float reverse = 1/ min; //берЄм обратное число
+
+         for (int i = 0; i < v_duration.size(); i++) { // умножаем каждый элемент на обратный, чтобы минимальное значение было 1
+
+             v_duration[i] = v_duration[i] * reverse;
+             //cout << v_duration[i] << " ";
+         }
+         cout << endl;
+        
+     }
+     
+ }
+

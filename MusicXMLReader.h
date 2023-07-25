@@ -3,9 +3,10 @@
 #include <algorithm>
 #include <vector>
 #include <iomanip>
+#include <numeric>
+
 #include "Z:\VS\MidiApp\MidiAPP\tiny\tinyxml2.h"
 using namespace std;
-
 using namespace tinyxml2;
 
 class MusicXMLReader
@@ -18,8 +19,11 @@ class MusicXMLReader
     vector<int> v_semitone; // вектор с полутонами
     vector<string> v_voices;// вектор с голосами
     vector<int> v_league; // вектор с координатами лиг
-    vector<int> v_duration; // вектор с длительностями
+    vector<float> v_duration; // вектор с длительностями
     vector<int> part_list; // номер дорожки, используется для выбора
+    int divisions = 1; //переменная для правильного расчёта всех длительностей в партии
+    //если она отсутствует, то по умолчанию равна 1
+
 
     //массивы с конвертированными данными
     vector <int> converted_notes;
@@ -52,13 +56,13 @@ class MusicXMLReader
     //методы, внутри Translation()
     void notes_f(vector<char>& notes, vector<int>& semitone, int chromatic);
     void octaves_f(vector<int>& converted_notes, vector<string>& octaves);
-    void convert_to_sequence(vector<int>&, vector<int>&, vector<int>&, int t);//вывод послед нот и октав
-    void show_information_about_composition(vector<int>& duration, int fraction_numerator, int denominator_fraction, int bpm);
+    void convert_to_sequence(vector<int>&, vector<float>&, vector<int>&, int t);//вывод послед нот и октав
+    void show_information_about_composition(vector<float>& duration, int fraction_numerator, int denominator_fraction, int bpm);
     void show_notes(vector <int>& converted_notes);
     void show_octaves(vector <int>& converted_octaves);
     int switch_hex_notes(char ch, int semitone);
     void print_amount(int note, int duration, int league, vector <int>& notes_or_octaves); //формирование последовательности нот или октав с учётом длительности и лиг
-
+    void calculation_duration();
 public:
     MusicXMLReader(const char*); //конструктор открывающий musicxml и считывающий партии
     void MusicPartWriter(const char*); //метод, который записывает всю информацию из патрии в массивы
