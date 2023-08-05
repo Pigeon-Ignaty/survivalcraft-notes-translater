@@ -10,3 +10,7 @@ nppBackup/
 .musicxml
 *.musicxml
 *.xml
+Translator.cpp
+Translator.cpp
+all.mid
+Translator.h

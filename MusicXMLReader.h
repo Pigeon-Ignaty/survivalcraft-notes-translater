@@ -30,7 +30,7 @@ class MusicXMLReader
     vector <int> converted_notes_sequence;
     vector <int> converted_octaves;
     vector <int> converted_octaves_sequence;
-    int type_instrument = 0; //тип инструмента дл€ sc
+    void type_instrument(int instrument); //фун-ци€ дл€ определени€ верхней и нижней границы октав
 
 
     //буферные переменные дл€ записи в массивы
@@ -53,9 +53,12 @@ class MusicXMLReader
     string tied; //лига start, stop
     int accidental_code(string s);
 
+    int high_octave; //верхн€€  октава
+    int low_octave; //нижн€€ октава
+
     //методы, внутри Translation()
     void notes_f(vector<char>& notes, vector<int>& semitone, int chromatic);
-    void octaves_f(vector<int>& converted_notes, vector<string>& octaves);
+    void octaves_f(vector<int>& converted_notes, vector<string>& octaves, int instrument);
     void convert_to_sequence(vector<int>&, vector<float>&, vector<int>&, int t);//вывод послед нот и октав
     void show_information_about_composition(vector<float>& duration, int fraction_numerator, int denominator_fraction, int bpm);
     void show_notes(vector <int>& converted_notes);
@@ -67,5 +70,5 @@ public:
     MusicXMLReader(const char*); //конструктор открывающий musicxml и считывающий партии
     void MusicPartWriter(const char*); //метод, который записывает всю информацию из патрии в массивы
     void OutputToConsole(); //вывод массивов в консоль
-    int Translation(); // функци€, котора€ вызывает другие функции дл€ перевода
+    int Translation(int instrument); // функци€, котора€ вызывает другие функции дл€ перевода
 };

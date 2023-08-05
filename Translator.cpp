@@ -33,7 +33,7 @@ void Translator::notes_f( vector<char>& notes, vector<int>& semitone, int chroma
 	}
 	cout << endl;
 }
-void Translator::octaves_f( vector<int>& converted_notes, vector<string>& octaves) {
+void Translator::octaves_f( vector<int>& converted_notes, vector<string>& octaves, int instrument) {
 	//cout << "ќктавы в octaves_f:" << endl;
 
 	for (int i = 0; i < octaves.size(); i++) {

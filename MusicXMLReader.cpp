@@ -1,7 +1,9 @@
 #include "MusicXMLReader.h"
 
 MusicXMLReader::MusicXMLReader(const char* name) {
-    setlocale(LC_ALL, "RU");
+    //setlocale(LC_ALL, "RU");
+    system("chcp 1251");
+
     doc.LoadFile(name);
     if (doc.Error()) {
         cout << doc.ErrorLineNum();       
@@ -253,13 +255,13 @@ void MusicXMLReader::MusicPartWriter(const char* NamePart) {
                         }
 
 
-                        XMLElement* accidental_tag = note_tag->FirstChildElement("accidental"); //Определение полутона
-                        if (accidental_tag != NULL) {//Проверка паузы
-                            accidental = atoi(accidental_tag->GetText());
-                            v_semitone[v_semitone.size() - 1] = accidental_code(accidental_tag->GetText());
-                            cout << "v_semitone " << v_semitone.size() - 1 << "\t";
-                            cout << "\taccidental: " << accidental_tag->GetText() << endl;
-                        }
+                        //XMLElement* accidental_tag = note_tag->FirstChildElement("accidental"); //Определение полутона
+                        //if (accidental_tag != NULL) {//Проверка паузы
+                        //    accidental = atoi(accidental_tag->GetText());
+                        //    v_semitone[v_semitone.size() - 1] = accidental_code(accidental_tag->GetText());
+                        //    cout << "v_semitone " << v_semitone.size() - 1 << "\t";
+                        //    cout << "\taccidental: " << accidental_tag->GetText() << endl;
+                        //}
                         note_tag = note_tag->NextSiblingElement("note");//след элемент по нотам
                         cout << endl;
                     }
@@ -314,10 +316,11 @@ void MusicXMLReader::MusicPartWriter(const char* NamePart) {
      cout << "chromatic: " << chromatic << endl;
  }
 
- int MusicXMLReader::Translation() {
-     type_instrument = 2; // тип инструмента
+ int MusicXMLReader::Translation(int instrument) {
+
+     //type_instrument = 2; // тип инструмента
      notes_f(v_notes, v_semitone, chromatic);//перевод из нот CDEFGAB в hex представление в survivalcraft
-     octaves_f(converted_notes, v_octaves); //перевод октавы в формат survivalcraft, в том числе обрезка по октавам
+     octaves_f(converted_notes, v_octaves, instrument); //перевод октавы в формат survivalcraft, в том числе обрезка по октавам
      calculation_duration();//вычисляет правильные длительности нот
      convert_to_sequence(converted_notes, v_duration, v_league, 0);// перевод в последовательность нот в зависимости от длительности
      convert_to_sequence(converted_octaves, v_duration, v_league, 1);//перевод в последовательность октав в зависимости от длительности
@@ -361,8 +364,8 @@ void MusicXMLReader::MusicPartWriter(const char* NamePart) {
      }
  }
 
- void MusicXMLReader::octaves_f(vector<int>& converted_notes, vector<string>& octaves) {
-     //cout << "Октавы в octaves_f:" << endl;
+ void MusicXMLReader::octaves_f(vector<int>& converted_notes, vector<string>& octaves, int instrument) {
+     type_instrument(instrument);
 
      for (int i = 0; i < octaves.size(); i++) {
          int number = 0;
@@ -372,20 +375,29 @@ void MusicXMLReader::MusicPartWriter(const char* NamePart) {
          }
          else {
              try {
-                 number = stoi(octaves[i]) - 2;
-                 if (number > 3 && converted_notes[i] == 0) {
-                     number = 4;
+                 number = stoi(octaves[i]);
+                 if (number == 3) {
+                     int l = 0;
+                 }
+                 if (number > high_octave && converted_notes[i] == 0) {
+                     number = high_octave + 1;//high_octave + 1;
                  }
                  else {
-                     number = stoi(octaves[i]) - 2;
-                     if (number < 0) {
-                         number = 0;
+                     if (number < low_octave) {
+                         number = low_octave;
                      }
-                     else if (number > 3) {
-                         number = 3;
+                     else if (number > high_octave) {
+                         number = high_octave;
                      }
                  }
-                 converted_octaves.push_back(number);
+                 if (instrument == 1) {//если колокольчик, то сдигаем на октаву вверх, чтобы пропусть ломаную октаву
+                     converted_octaves.push_back(number - low_octave + 1);
+
+                 }
+                 else {
+                     converted_octaves.push_back(number - low_octave);
+
+                 }
 
                  //cout << hex << uppercase << number;
              }
@@ -398,6 +410,25 @@ void MusicXMLReader::MusicPartWriter(const char* NamePart) {
      }
  }
 
+ void MusicXMLReader::type_instrument(int instrument) {
+     if (instrument == 1) { // колокольчик - сломана 2 октава  
+         high_octave = 4;
+         low_octave = 3;
+     }
+     if (instrument == 2|| instrument == 3 || instrument == 6) { // орган, 8 бит, вокальное ду  
+         high_octave = 5;
+         low_octave = 3;
+     }
+     else if (instrument == 4 || instrument == 5) {//струнный инструмент, труба
+         high_octave = 4;
+         low_octave = 2;
+     }
+
+     else if (instrument == 7 || instrument == 8) {//оба пианино
+         high_octave = 5;
+         low_octave = 2;
+     }
+ }
  void MusicXMLReader::convert_to_sequence(vector<int>& converted, vector<float>& duration, vector<int>& league, int t) {
 
      if (converted.size() != duration.size()) {
