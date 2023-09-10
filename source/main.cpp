@@ -12,11 +12,13 @@ using namespace std;
 int main() {
     system("chcp 1251");
     //setlocale(LC_ALL, "RU");
-    MusicXMLReader xml("all.musicxml");
-    system("pause");
-    xml.MusicPartWriter("P1");
+    MusicXMLReader xml("Scatman_ski_ba_bop_dop_bop2.musicxml");
+    xml.ReadVoice("P1");
+
+    //system("pause");
+    xml.MusicPartWriter("P7","1");
     //xml.OutputToConsole(); //вывод доп информации
-    xml.Translation(1);//3, 6
+    xml.Translation(7);//3, 6
 
     return 0;
 }

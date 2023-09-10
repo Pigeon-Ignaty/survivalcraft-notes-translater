@@ -4,6 +4,7 @@
 #include <vector>
 #include <iomanip>
 #include <numeric>
+#include <set>
 
 #include "Z:\VS\MidiApp\MidiAPP\tiny\tinyxml2.h"
 using namespace std;
@@ -41,7 +42,7 @@ class MusicXMLReader
     int bpm = 0; // beat per minute
     int count_measure = 1; //счётчик тактов с 1
     int duration = 0; //счётчик тактов с 1
-    int voice = 0; //голоса
+    //int voice = 0; //голоса
     int step = 0; // шаг для pitch
     int octave = 0; // октава
     int alter = 0; //показывает полутон на ноте, если он есть на ключе
@@ -68,7 +69,8 @@ class MusicXMLReader
     void calculation_duration();
 public:
     MusicXMLReader(const char*); //конструктор открывающий musicxml и считывающий партии
-    void MusicPartWriter(const char*); //метод, который записывает всю информацию из патрии в массивы
+    void ReadVoice(const char*); //метод, считывающий количество голосов в партии для последующего выбора
+    void MusicPartWriter(const char*, const char*); //метод, который записывает всю информацию из патрии и голоса в массивы
     void OutputToConsole(); //вывод массивов в консоль
     int Translation(int instrument); // функция, которая вызывает другие функции для перевода
 };

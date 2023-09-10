@@ -14,3 +14,5 @@ Translator.cpp
 Translator.cpp
 all.mid
 Translator.h
+*.mid
+Translator.h
