@@ -5,6 +5,8 @@
 #include <iomanip>
 #include <numeric>
 #include <set>
+#include <locale>
+#include <codecvt>
 
 #include "Z:\VS\MidiApp\MidiAPP\tiny\tinyxml2.h"
 using namespace std;
@@ -12,6 +14,7 @@ using namespace tinyxml2;
 
 class MusicXMLReader
 {
+
     vector <string> musical_parts; // id всех музыкальных партий в произведении
     XMLDocument doc; // файл musicxml 
 

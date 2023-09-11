@@ -1,8 +1,8 @@
 #include "MusicXMLReader.h"
 
 MusicXMLReader::MusicXMLReader(const char* name) {
-    //setlocale(LC_ALL, "RU");
-    system("chcp 1251");
+    std::locale utf8_locale("en_US.UTF-8");
+    std::locale::global(utf8_locale);
 
     doc.LoadFile(name);
     if (doc.Error()) {
@@ -22,7 +22,7 @@ MusicXMLReader::MusicXMLReader(const char* name) {
                 cout << endl;
                 credit = credit->NextSiblingElement("credit"); //след элемент
             }
-            cout << "Вывод следующих партий в музыкальной композиции: " << endl;
+            cout << u8"Вывод следующих партий в музыкальной композиции: " << endl;
             int scorePartCount = 0;
             XMLElement* part_list = pRootElement->FirstChildElement("part-list");
             if (part_list != NULL) {
@@ -34,7 +34,7 @@ MusicXMLReader::MusicXMLReader(const char* name) {
                     musical_parts.push_back(score_part->Attribute("id"));
                     XMLElement* part_name = score_part->FirstChildElement("part-name");
                     if (part_name != NULL) {
-                        cout << "Название партии: " << string(part_name->GetText()) << endl;
+                        cout << u8"Название партии: " << string(part_name->GetText()) << endl;
                     }
                     scorePartCount++;
                 }
@@ -140,30 +140,30 @@ void MusicXMLReader::MusicPartWriter(const char* NamePart, const char* voice) {
                     }
 
 
-                    cout << "Measure (такт): " << count_measure << endl;
+                    cout << u8"Measure (такт): " << count_measure << endl;
                     if (fifths_tag != NULL) {
                         fifths = atoi(fifths_tag->GetText());
-                        cout << "\tЗнаки: " << fifths << endl;
+                        cout << u8"\tЗнаки: " << fifths << endl;
                     }
 
                     if (beats_tag != NULL) {
                         beats = atoi(beats_tag->GetText());
-                        cout << "\tдолей в числителе тактового размера: " << beats_tag->GetText() << endl;
+                        cout << u8"\tдолей в числителе тактового размера: " << beats_tag->GetText() << endl;
                     }
 
                     if (beat_type_tag != NULL) {
                         beat_type = atoi(beat_type_tag->GetText());
-                        cout << "\t долей в знаменателе тактового размера: " << beat_type_tag->GetText() << endl;
+                        cout << u8"\t долей в знаменателе тактового размера: " << beat_type_tag->GetText() << endl;
                     }
 
                     if (sign_tag != NULL) {
                         sign = string(sign_tag->GetText());
-                        cout << "\tsign (знак): " << sign << endl;
+                        cout << u8"\tsign (знак): " << sign << endl;
                     }
 
                     if (line_tage != NULL) {
                         line = atoi(line_tage->GetText());
-                        cout << "\tline (номер для знака): " << line << endl;
+                        cout << u8"\tline (номер для знака): " << line << endl;
                     }
 
                     //////Читаем ноты
@@ -333,7 +333,7 @@ void MusicXMLReader::ReadVoice(const char* NamePart) {
         }
 
     }
-    cout << "Голоса, обнаруженные в партии" << std::endl;
+    cout << u8"Голоса, обнаруженные в партии" << std::endl;
     for (const string& v : voices) {
         cout << v << endl;
     }
@@ -341,7 +341,7 @@ void MusicXMLReader::ReadVoice(const char* NamePart) {
 
  void MusicXMLReader::OutputToConsole() {
 
-     cout << "номер, ноты, октавы, длительность,полутона " << endl;
+     cout << u8"номер, ноты, октавы, длительность,полутона " << endl;
      cout << v_notes.size() << endl;
      cout << v_octaves.size() << endl;
      cout << v_duration.size() << endl;
@@ -351,18 +351,18 @@ void MusicXMLReader::ReadVoice(const char* NamePart) {
          cout << i << " " << v_notes[i] << " " << v_octaves[i] << " " << v_duration[i] << " " << v_semitone[i] << endl;
      }
      cout << endl;
-     cout << "Ноты в v_notes" << endl;
+     cout << u8"Ноты в v_notes" << endl;
      for (int i = 0; i < v_notes.size(); i++) {
          cout << v_notes[i] << "";
      }
      cout << endl;
-     cout << "Октавы в v_octaves" << endl;
+     cout << u8"Октавы в v_octaves" << endl;
 
      for (int i = 0; i < v_octaves.size(); i++) {
          cout << v_octaves[i] << "";
      }
      cout << endl;
-     cout << "Длительности в v_duration" << endl;
+     cout << u8"Длительности в v_duration" << endl;
 
      for (int i = 0; i < v_duration.size(); i++) {
          cout << v_duration[i] << " ";
@@ -390,7 +390,7 @@ void MusicXMLReader::ReadVoice(const char* NamePart) {
      if (notes.size() != semitone.size()) {
          cout << "Error: vectors have different sizes" << endl;
      }
-     cout << "Ноты в notes_f:" << endl;
+     cout << u8"Ноты в notes_f:" << endl;
      for (int i = 0; i < semitone.size(); i++) {
          semitone[i] = semitone[i] + chromatic;
          int hex_notes = switch_hex_notes(notes[i], semitone[i]);
@@ -541,13 +541,13 @@ void MusicXMLReader::ReadVoice(const char* NamePart) {
      catch (const exception& ex) {
          cout << ex.what() << endl;
      }
-     cout << "Длина минимальной длительности/время для генератора " << round(time_min_duration * 100) / 100 << endl;
-     cout << "Минимальная длительность " << max_duration << endl;
+     cout << u8"Длина минимальной длительности/время для генератора " << round(time_min_duration * 100) / 100 << endl;
+     cout << u8"Минимальная длительность " << max_duration << endl;
 
  }
 
  void MusicXMLReader::show_notes(vector <int>& converted_notes_sequence) {
-     cout << "Ноты" << endl;
+     cout << u8"Ноты" << endl;
      int count = 0;
      for (int& i : converted_notes_sequence) {
          if (count == 256) {
@@ -565,7 +565,7 @@ void MusicXMLReader::ReadVoice(const char* NamePart) {
  }
 
  void MusicXMLReader::show_octaves(vector <int>& converted_octaves_sequence) {
-     cout << "Октавы" << endl;
+     cout << u8"Октавы" << endl;
      int count = 0;
      for (int& i : converted_octaves_sequence) {
          if (count == 256) {
