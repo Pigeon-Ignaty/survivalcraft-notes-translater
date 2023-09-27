@@ -10,16 +10,18 @@ using namespace std;
 
 
 int main() {
-    system("chcp 1251");
-    //setlocale(LC_ALL, "RU");
-    MusicXMLReader xml("Scatman_ski_ba_bop_dop_bop2.musicxml");
+    setlocale(LC_ALL, "RU");
+    cout << "Введите имя файла с расширением, либо путь до него." << endl;
+    cout << "Пример: Minecraft_OST.musicxml или D:\\MIDI\\Minecraft_OST.musicxml"  << endl;
 
-    xml.ReadVoice("P1");
+    MusicXMLReader xml("Scatman_ski_ba_bop_dop_bop4.musicxml");
+
+    xml.ReadVoice("P6");
     system("pause");
 
-    xml.MusicPartWriter("P7","1");
+    xml.MusicPartWriter("P8","1");
     //xml.OutputToConsole(); //вывод доп информации
-    xml.Translation(7);//3, 6
+    xml.Translation(8,1);//3, 6
 
     return 0;
 }

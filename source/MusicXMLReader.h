@@ -69,11 +69,11 @@ class MusicXMLReader
     void show_octaves(vector <int>& converted_octaves);
     int switch_hex_notes(char ch, int semitone);
     void print_amount(int note, int duration, int league, vector <int>& notes_or_octaves); //формирование последовательности нот или октав с учётом длительности и лиг
-    void calculation_duration();
+    void calculation_duration(int min_duration_note);
 public:
     MusicXMLReader(const char*); //конструктор открывающий musicxml и считывающий партии
     void ReadVoice(const char*); //метод, считывающий количество голосов в партии для последующего выбора
     void MusicPartWriter(const char*, const char*); //метод, который записывает всю информацию из патрии и голоса в массивы
     void OutputToConsole(); //вывод массивов в консоль
-    int Translation(int instrument); // функция, которая вызывает другие функции для перевода
+    int Translation(int instrument, int min_duration_note); // функция, которая вызывает другие функции для перевода
 };
