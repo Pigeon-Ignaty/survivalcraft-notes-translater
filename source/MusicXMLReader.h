@@ -56,6 +56,7 @@ class MusicXMLReader
     string rest; // пауза
     string tied; //лига start, stop
     int accidental_code(string s);
+    int minimal_duration; //минимальна€ длительность во всЄм произведении
 
     int high_octave; //верхн€€  октава
     int low_octave; //нижн€€ октава
@@ -70,10 +71,11 @@ class MusicXMLReader
     int switch_hex_notes(char ch, int semitone);
     void print_amount(int note, int duration, int league, vector <int>& notes_or_octaves); //формирование последовательности нот или октав с учЄтом длительности и лиг
     void calculation_duration(int min_duration_note);
+    void FindMinimalDuration(const char* );
 public:
     MusicXMLReader(const char*); //конструктор открывающий musicxml и считывающий партии
     void ReadVoice(const char*); //метод, считывающий количество голосов в партии дл€ последующего выбора
     void MusicPartWriter(const char*, const char*); //метод, который записывает всю информацию из патрии и голоса в массивы
     void OutputToConsole(); //вывод массивов в консоль
-    int Translation(int instrument, int min_duration_note); // функци€, котора€ вызывает другие функции дл€ перевода
+    int Translation(int instrument); // функци€, котора€ вызывает другие функции дл€ перевода
 };

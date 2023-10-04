@@ -21,7 +21,7 @@ int main() {
 
     xml.MusicPartWriter("P8","1");
     //xml.OutputToConsole(); //вывод доп информации
-    xml.Translation(8,1);//3, 6
+    xml.Translation(8);//3, 6
 
     return 0;
 }

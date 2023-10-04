@@ -43,7 +43,7 @@ MusicXMLReader::MusicXMLReader(const char* name) {
             }
             cout << "scorePartCount: " << scorePartCount << endl;
         }
-
+        FindMinimalDuration(name);//вызов функции, которая будет duration самой быстрой длительности во всём произведении
 
 
         
@@ -397,12 +397,12 @@ void MusicXMLReader::MusicPartWriter(const char* NamePart, const char* voice) {
      cout << "chromatic: " << chromatic << endl;
  }
 
- int MusicXMLReader::Translation(int instrument, int min_duration_note) {
+ int MusicXMLReader::Translation(int instrument) {
 
      //type_instrument = 2; // тип инструмента
      notes_f(v_notes, v_semitone, chromatic);//перевод из нот CDEFGAB в hex представление в survivalcraft
      octaves_f(converted_notes, v_octaves, instrument); //перевод октавы в формат survivalcraft, в том числе обрезка по октавам
-     calculation_duration(min_duration_note);//вычисляет правильные длительности нот
+     calculation_duration(minimal_duration);//вычисляет правильные длительности нот
      convert_to_sequence(converted_notes, v_duration, v_league, 0);// перевод в последовательность нот в зависимости от длительности
      convert_to_sequence(converted_octaves, v_duration, v_league, 1);//перевод в последовательность октав в зависимости от длительности
      show_information_about_composition(v_duration, beats, beat_type, bpm);//рекомендуемая частота генератора, не работает правильно
@@ -655,5 +655,56 @@ void MusicXMLReader::MusicPartWriter(const char* NamePart, const char* voice) {
      //   
      //}
      
+ }
+
+ void MusicXMLReader::FindMinimalDuration(const char* name)
+ {
+     double min = 1;
+     XMLElement* pRootElement = doc.RootElement(); // корневой каталог
+     if (NULL != pRootElement) { // если не пустой
+         XMLElement* part_id_tag = pRootElement->FirstChildElement("part");
+         XMLElement* measure_tag = nullptr;
+         if(part_id_tag != NULL){
+             while (part_id_tag) {
+                 count_measure = 0;
+                 //cout << part_id_tag->Attribute("id") << endl;
+                 measure_tag = part_id_tag->FirstChildElement("measure");
+                 if (measure_tag != NULL) {
+                     while (measure_tag) { // если не пустой
+                         XMLElement* attributes_tag = nullptr;
+                         XMLElement* divisions_tag = nullptr;
+                         XMLElement* line_tage = nullptr;
+                         XMLElement* transpose_tag = nullptr;
+                         XMLElement* direction_tag = nullptr;
+                         XMLElement* direction_type_tag = nullptr;
+                         //cout << u8"Measure (такт): " << count_measure << endl;
+                         XMLElement* note_tag = measure_tag->FirstChildElement("note");
+                         if (note_tag != NULL) {
+                             while (note_tag) { // цикл по  нотам в measure
+
+                                 XMLElement* duration_tag = note_tag->FirstChildElement("duration"); //Определение длительности
+                                 if (duration_tag != NULL) {//длительность
+                                     duration = atoi(duration_tag->GetText());
+                                     if (duration < min) {
+                                         min = duration;
+                                     }
+                                 }
+                                 note_tag = note_tag->NextSiblingElement("note");//след элемент по нотам
+
+                             }
+                             measure_tag = measure_tag->NextSiblingElement("measure");//след элемент по measure
+                             count_measure++;
+                         }
+                         
+                     }
+                     part_id_tag = part_id_tag->NextSiblingElement("part");
+                 }
+                 
+             }
+
+         }
+         }
+         
+     minimal_duration = min;
  }
 
