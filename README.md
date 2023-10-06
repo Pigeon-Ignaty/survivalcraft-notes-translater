@@ -88,7 +88,7 @@ FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
 ```
 
 ___
-# Updates List <a name="updates"></a>
+# Updates List <a name="changelog"></a>
 In this section, all major changes, additions, and deletions in the code are recorded.
 * 28th September 2023
     * Proper voice processing. Now, if a voice is missing in a measure, it will be automatically filled with a pause.
@@ -138,7 +138,7 @@ Scatman_ski_ba_bop_dop_bop2.musicxml
 ```
 Консоль выведет следующие партии:
 ```
-Вывод следующих партий в музыкальной композиции:
+Вывод следующих партий в му	зыкальной композиции:
 ID: P1  Название партии: Фортепиано
 ID: P2  Название партии: Фортепиано
 ID: P3  Название партии: Фортепиано
