@@ -1,4 +1,103 @@
-# Survivalcraft Notes Translator
+# ENGLISH Survivalcraft Notes Translator
+This program translates notes from the .musicxml format into a hexadecimal string with notes and octaves for the sound generator in Survivalcraft.
+___
+## Table of Contents
+- [How Survivalcraft Notes Translator Works](#how-survivalcraft-notes-translator-works)
+- [What's Implemented](#whats-implemented)
+- [What's Not Implemented](#whats-not-implemented)
+- [Changelog](#changelog)
+- [Example](#example)
+- [Project Team](#project-team)
+___
+# How Survivalcraft Notes Translator Works <a name="how-survivalcraft-notes-translator-works"></a>
+
+**Survivalcraft Notes Translator** is a program that reads musicxml files, extracts the found parts and voices, and translates notes and octaves from the selected voice into the format of the sound generator in Survivalcraft.
+___
+
+# What's Implemented <a name="whats-implemented"></a>
+- Opening and reading .musicxml files
+- Output of part names and selection
+- Output of all voices in a part and their selection
+- Translation of basic single notes
+- Automatic calculation of output notation for notes and octaves.
+- Selection of the instrument and automatic transposition of notes to the required octave depending on the instrument's range. (For the bell, the first octave is trimmed as it sounds dissonant)
+- Ligature detection and note duration extension
+- Handling of all common time signatures
+- Automatic line splitting at 256 characters with padding with 'F' characters if the line is less than 256 characters in length
+- ___
+# What's Not Implemented <a name="whats-not-implemented"></a>
+- Opening and reading .xml and .midi files
+- Splitting chords into separate parts and translating them
+- Translation of duoles, trioles, quartoles, quintoles, etc.
+- Translation of sound volume fluctuations
+___
+# Example <a name="example"></a>
+
+For example:
+```
+Scatman_ski_ba_bop_dop_bop2.musicxml
+```
+The console will output the following parts:
+```
+Output of the following parts in the musical composition:
+ID: P1  Part Name: Piano
+ID: P2  Part Name: Piano
+ID: P3  Part Name: Piano
+ID: P4  Part Name: Piano
+ID: P5  Part Name: Piano
+ID: P6  Part Name: Sawtooth Synthesizer
+ID: P7  Part Name: 5-string Electric Bass Guitar
+ID: P8  Part Name: Drum Kit
+ID: P9  Part Name: Clap
+```
+The user selects a part. Let it be P1.
+Next, all voices from part P1 will be displayed:
+```
+Voices detected in the part
+1
+```
+Then the user will be prompted to select the type of instrument.
+  * *1 Bell*
+  * *2 Organ*
+  * *3 Whistle*
+  * *4 String Instrument*
+  * *5 Trumpet*
+  * *6 Vocal Doo*
+  * *7 Piano*
+  * *8 Piano with Pedal*
+<br>Next, the program will translate the selected piece and display 2 lines. If the line is longer than 256 characters, it will split them into 256-character parts. If there is a piece left that is smaller, it will pad it with 'F' characters.
+```
+Notes
+FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF1FF1FF1FF1FF1F1F5FF5FF5FF5FF5F5F3FF3FF3FF3FF3F3F3FF3FF3FF3FF3F5F1FF1FF1FF1FF1F1F5FF5FF5FF5FF5F5F3FF3FF3FF3FF3F3F3FF3FF3FF3FF3F5F1FF1FF1FF1FF1F1F5FF5FF5FF5FF5F5F3FF3FF3FF3FF3F3F3FF3FF3FF3FF3F5F1FF1FF1FF1FF1F1F5FF5FF5FF5FF5F5F
+3FF3FF3FF3FF3F3F3FF3FF3FF3FF3F5F1FF1FF1FF1FF1F1F5FF5FF5FF5FF5F5F3FF3FF3FF3FF3F3F3FF3FF3FF3FF3F5F1FF1FF1FF1FF1F1F5FF5FF5FF5FF5F5F3FF3FF3FF3FF3F3F3FF3FF3FF3FF3F5F1FF1FF1FF1FF1F1F5FF5FF5FF5FF5F5F3FF3FF3FF3FF3F3F3FF3FF3FF3FF3F5F1FF1FF1FF1FF1F1F5FF5FF5FF5FF5F5F
+3FF3FF3FF3FF3F3F3FF3FF3FF3FF3F5F1FF1FF1FF1FF1F1F5FF5FF5FF5FF5F5F3FF3FF3FF3FF3F3F3FF3FF3FF3FF3F5F1FF1FF1FF1FF1F1F5FF5FF5FF5FF5F5F3FF3FF3FF3FF3F3FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF1FF1FF1FF1FF1F1F5FF5FF5FF5FF5F5F3FF3FF3FF3FF3F3F3FF3FF3FF3FF3F5F1FF1FF1FF1FF1F1F
+5FF5FF5FF5FF5F5F3FF3FF3FF3FF3F3F3FF3FF3FF3FF3F5F1FF1FF1FF1FF1F1F5FF5FF5FF5FF5F5F3FF3FF3FF3FF3F3F3FF3FF3FF3FF3F5F1FF1FF1FF1FF1F1F5FF5FF5FF5FF5F5F3FF3FF3FF3FF3F3F3FF3FF3FF3FF3F5F1FF1FF1FF1FF1F1F5FF5FF5FF5FF5F5F3FF3FF3FF3FF3F3F3FF3FF3FF3FF3F5F1FF1FF1FF1FF1F1F
+5FF5FF5FF5FF5F5F3FF3FF3FF3FF3F3F3FF3FF3FF3FF3F5FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF1FF1FF1FF1FF1F1F5FF5FF5FF5FF5F5F3FF3FF3FF3FF3F3F3FF3FF3FF3FF3F5F1FF1FF1FF1FF1F1F5FF5FF5FF5FF5F5F3FF3FF3FF3FF3F3F3FF3FF3FF3FF3F5F1FF1FF1FF1FF1F1F5FF5FF5FF5FF5F5F3FF3FF3FF3FF3F3F
+3FF3FF3FF3FF3F5F1FF1FF1FF1FF1F1F5FF5FF5FF5FF5F5F3FF3FF3FF3FF3F3F3FF3FF3FF3FF3F5F1FF1FF1FF1FF1F1F5FF5FF5FF5FF5F5F3FF3FF3FF3FF3F3F3FF3FF3FF3FF3F5F1FF1FF1FF1FF1F1F5FF5FF5FF5FF5F5F3FF3FF3FF3FF3F3F3FF3FF3FF3FF3F5F1FF1FF1FF1FF1F1F5FF5FF5FF5FF5F5F3FF3FF3FF3FF3F3F
+3FF3FF3FF3FF3F5F1FF1FF1FF1FF1F1F5FF5FF5FF5FF5F5F3FF3FF3FF3FF3F3F3FF3FF3FF3FF3F5F1FF1FF1FF1FF1F1F5FF5FF5FF5FF5F5F3FF3FF3FF3FF3F3F3FF3FF3FF3FF3F5F1FF1FF1FF1FF1F1F5FF5FF5FF5FF5F5F3FF3FF3FF3FF3F3F3FF3FF3FF3FF3F5F1FF1FF1FF1FF1F1F5FF5FF5FF5FF5F5F3FF3FF3FF3FF3FFF
+FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+Octaves
+FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF0FF0FF0FF0FF0F0F0FF0FF0FF0FF0F0F0FF0FF0FF0FF0F0F0FF0FF0FF0FF0F0F0FF0FF0FF0FF0F0F0FF0FF0FF0FF0F0F0FF0FF0FF0FF0F0F0FF0FF0FF0FF0F0F0FF0FF0FF0FF0F0F0FF0FF0FF0FF0F0F0FF0FF0FF0FF0F0F0FF0FF0FF0FF0F0F0FF0FF0FF0FF0F0F0FF0FF0FF0FF0F0F
+0FF0FF0FF0FF0F0F0FF0FF0FF0FF0F0F0FF0FF0FF0FF0F0F0FF0FF0FF0FF0F0F0FF0FF0FF0FF0F0F0FF0FF0FF0FF0F0F0FF0FF0FF0FF0F0F0FF0FF0FF0FF0F0F0FF0FF0FF0FF0F0F0FF0FF0FF0FF0F0F0FF0FF0FF0FF0F0F0FF0FF0FF0FF0F0F0FF0FF0FF0FF0F0F0FF0FF0FF0FF0F0F0FF0FF0FF0FF0F0F0FF0FF0FF0FF0F0F
+0FF0FF0FF0FF0F0F0FF0FF0FF0FF0F0F0FF0FF0FF0FF0F0F0FF0FF0FF0FF0F0F0FF0FF0FF0FF0F0F0FF0FF0FF0FF0F0F0FF0FF0FF0FF0F0F0FF0FF0FF0FF0F0F0FF0FF0FF0FF0F0FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF0FF0FF0FF0FF0F0F0FF0FF0FF0FF0F0F0FF0FF0FF0FF0F0F0FF0FF0FF0FF0F0F0FF0FF0FF0FF0F0F
+0FF0FF0FF0FF0F0F0FF0FF0FF0FF0F0F0FF0FF0FF0FF0F0F0FF0FF0FF0FF0F0F0FF0FF0FF0FF0F0F0FF0FF0FF0FF0F0F0FF0FF0FF0FF0F0F0FF0FF0FF0FF0F0F0FF0FF0FF0FF0F0F0FF0FF0FF0FF0F0F0FF0FF0FF0FF0F0F0FF0FF0FF0FF0F0F0FF0FF0FF0FF0F0F0FF0FF0FF0FF0F0F0FF0FF0FF0FF0F0F0FF0FF0FF0FF0F0F
+0FF0FF0FF0FF0F0F0FF0FF0FF0FF0F0F0FF0FF0FF0FF0F0FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF0FF0FF0FF0FF0F0F0FF0FF0FF0FF0F0F0FF0FF0FF0FF0F0F0FF0FF0FF0FF0F0F0FF0FF0FF0FF0F0F0FF0FF0FF0FF0F0F0FF0FF0FF0FF0F0F0FF0FF0FF0FF0F0F0FF0FF0FF0FF0F0F0FF0FF0FF0FF0F0F0FF0FF0FF0FF0F0F
+0FF0FF0FF0FF0F0F0FF0FF0FF0FF0F0F0FF0FF0FF0FF0F0F0FF0FF0FF0FF0F0F0FF0FF0FF0FF0F0F0FF0FF0FF0FF0F0F0FF0FF0FF0FF0F0F0FF0FF0FF0FF0F0F0FF0FF0FF0FF0F0F0FF0FF0FF0FF0F0F0FF0FF0FF0FF0F0F0FF0FF0FF0FF0F0F0FF0FF0FF0FF0F0F0FF0FF0FF0FF0F0F0FF0FF0FF0FF0F0F0FF0FF0FF0FF0F0F
+0FF0FF0FF0FF0F0F0FF0FF0FF0FF0F0F0FF0FF0FF0FF0F0F0FF0FF0FF0FF0F0F0FF0FF0FF0FF0F0F0FF0FF0FF0FF0F0F0FF0FF0FF0FF0F0F0FF0FF0FF0FF0F0F0FF0FF0FF0FF0F0F0FF0FF0FF0FF0F0F0FF0FF0FF0FF0F0F0FF0FF0FF0FF0F0F0FF0FF0FF0FF0F0F0FF0FF0FF0FF0F0F0FF0FF0FF0FF0F0F0FF0FF0FF0FF0FFF
+FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+```
+
+___
+# Updates List <a name="updates"></a>
+In this section, all major changes, additions, and deletions in the code are recorded.
+* 28th September 2023
+    * Proper voice processing. Now, if a voice is missing in a measure, it will be automatically filled with a pause.
+    * Correct calculation of the duration of a whole bar for basic time signatures.
+    * For the Translation() method, it is now necessary to manually specify the minimum duration in duration units for the entire composition. Otherwise, the method will automatically reduce the duration using the minimum duration in the selected part. This will prevent incorrect encoding of output notes and octaves. In the future, a separate function will be developed to automatically determine the minimum duration.
+* 4th October 2023
+    * Added FindMinimalDuration() function, which reads and finds the minimum duration in the entire composition (except for percussion instruments, as it turned out). The obtained value is used by the Translation() method to correctly calculate the remaining durations.
+
+# РУССКИЙ Survivalcraft Notes Translator
 Эта программа переводит ноты из формата .musicxml в hex строку с нотами и октавами для генератора звука в Survivalcraft.
 ___
 ## Содержание
@@ -93,4 +192,7 @@ ___
 * 28.09.23
     * Правильная обработка голоса. Теперь, если в такте отсутствует необходимый голос, он будет автоматически заполнен паузой.
     * Для основных размеров тактов правильно рассчитывается длительность целого такта.
-    * Для метода Translation теперь необходимо вручную указывать минимальную длительность в единицах продолжительности во всём произведение. В противном случае метод будет автоматически сокращать длительность, используя минимальную длительность в выбранной партии. Это предотвратит неправильное кодирование выходных записей нот и октав. В будущем будет разработана отдельная функция, которая будет автоматически определять минимальную длительность.
+    * Для метода Translation() теперь необходимо вручную указывать минимальную длительность в единицах продолжительности во всём произведение. В противном случае метод будет автоматически сокращать длительность, используя минимальную длительность в выбранной партии. Это предотвратит неправильное кодирование выходных записей нот и октав. В будущем будет разработана отдельная функция, которая будет автоматически определять минимальную длительность.
+* 4.10.23
+	* Добавлена функция FindMinimalDuration(), которая считывает и находит минимальную длительность во всем произведении(как выяснилось кроме ударных инструментов). Полученное значение используется методом Translation() для правильного вычисления остальных длительностей.
+
