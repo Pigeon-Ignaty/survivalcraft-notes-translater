@@ -56,17 +56,43 @@ int MusicXMLReader::accidental_code(string s) {
     return 0;
 }
 void MusicXMLReader::MusicPartWriter(const char* NamePart, const char* voice) {
-    // Анализируем каждый measure
 
     XMLElement* pRootElement = doc.RootElement(); // корневой каталог
     if (NULL != pRootElement) { // если не пустой
-        //----------------------
+        XMLElement* part_list_tag = pRootElement->FirstChildElement("part-list");
+        if (part_list_tag != NULL) {
+            XMLElement* score_part_tag = part_list_tag->FirstChildElement("score-part");
+            while (score_part_tag) {
+                const char* ScorePartId = score_part_tag->Attribute("id");
+                if (string(ScorePartId) == NamePart) {
+                    XMLElement* score_instrument_tag = score_part_tag->FirstChildElement("score-instrument");
+                    if (score_instrument_tag != NULL) {
+                        while (score_instrument_tag) {
+                            XMLElement* instrument_name_tag = score_instrument_tag->FirstChildElement("instrument-name");
+                            PercussionPartInstruments[score_instrument_tag->Attribute("id")] = string(instrument_name_tag->GetText());
+                            score_instrument_tag = score_instrument_tag->NextSiblingElement("score-instrument");
+
+                        }
+                        PercussionPartInstruments["F"] = "F";
+                        break;
+
+                    }
+
+                }
+                score_part_tag = score_part_tag->NextSiblingElement("score-part");
+
+            }
+            
+
+        }
+        count_measure = 0;
         XMLElement* part_id_tag = pRootElement->FirstChildElement("part");
         XMLElement* measure_tag = nullptr;
         while (part_id_tag) {
             const char* partId = part_id_tag->Attribute("id");
             if (partId && std::string(partId) == NamePart) {
                 measure_tag = part_id_tag->FirstChildElement("measure");
+                // Анализируем каждый measure
 
                 while (measure_tag) { // если не пустой
                     XMLElement* attributes_tag = nullptr;
@@ -112,6 +138,7 @@ void MusicXMLReader::MusicPartWriter(const char* NamePart, const char* voice) {
                             clef_tag = attributes_tag->FirstChildElement("clef");
                             if (clef_tag->FirstChildElement("sign") != NULL) {
                                 sign_tag = clef_tag->FirstChildElement("sign");
+                                sign = sign_tag->GetText();
                             }
                             if (clef_tag->FirstChildElement("line") != NULL) {
                                 line_tage = clef_tag->FirstChildElement("line");
@@ -171,6 +198,7 @@ void MusicXMLReader::MusicPartWriter(const char* NamePart, const char* voice) {
                     //////Читаем ноты
                     XMLElement* note_tag = measure_tag->FirstChildElement("note");
                     XMLElement* voice_tag = note_tag->FirstChildElement("voice");
+
                     string current_voice = voice_tag->GetText();
                     bool flag_voice = false; //проверка на отсутсвие голоса в такте
                     while (note_tag) { // цикл по  нотам в measure
@@ -228,7 +256,16 @@ void MusicXMLReader::MusicPartWriter(const char* NamePart, const char* voice) {
                                 cout << "\tduration: " << duration_tag->GetText() << endl;
                                 v_duration.push_back(duration);
                             }
+                            XMLElement* instrument_tag = note_tag->FirstChildElement("instrument");//для инструмента
+                            if (instrument_tag != NULL) {
+                                    if (instrument_tag->Attribute("id") != NULL) {
+                                        v_instruments.push_back(instrument_tag->Attribute("id"));
+                                }
+                            }
+                            else {
+                                v_instruments.push_back("F");
 
+                            }
                             if (note_tag->FirstChildElement("notations") != NULL) {
                                 if (note_tag->FirstChildElement("notations")->FirstChildElement("tied") != NULL) {
                                     if (note_tag->FirstChildElement("notations")->FirstChildElement("tied")->Attribute("type") != NULL) {
@@ -294,6 +331,7 @@ void MusicXMLReader::MusicPartWriter(const char* NamePart, const char* voice) {
                         v_octaves.push_back("n");
                         v_semitone.push_back(0);
                         v_league.push_back(0);
+                        v_instruments.push_back("F");
                         //вычисляем размер такта с помощью хитрого алгаритма, до которого бот не догадался, а только дезинформировал, тварь. А у меня потёк котелок
                         int measure_size = 0;
 
@@ -403,11 +441,19 @@ void MusicXMLReader::MusicPartWriter(const char* NamePart, const char* voice) {
      notes_f(v_notes, v_semitone, chromatic);//перевод из нот CDEFGAB в hex представление в survivalcraft
      octaves_f(converted_notes, v_octaves, instrument); //перевод октавы в формат survivalcraft, в том числе обрезка по октавам
      calculation_duration(minimal_duration);//вычисляет правильные длительности нот
-     convert_to_sequence(converted_notes, v_duration, v_league, 0);// перевод в последовательность нот в зависимости от длительности
-     convert_to_sequence(converted_octaves, v_duration, v_league, 1);//перевод в последовательность октав в зависимости от длительности
-     show_information_about_composition(v_duration, beats, beat_type, bpm);//рекомендуемая частота генератора, не работает правильно
-     show_notes(converted_notes_sequence); //вывод нот с делением на строки длиной 256 символов
-     show_octaves(converted_octaves_sequence);//вывод октав с делением на строки длиной 256 символов
+     if (sign != "percussion") {//если не ударные
+         convert_to_sequence(converted_notes, v_duration, v_league, 0);// перевод в последовательность нот в зависимости от длительности
+         convert_to_sequence(converted_octaves, v_duration, v_league, 1);//перевод в последовательность октав в зависимости от длительности
+         show_information_about_composition(v_duration, beats, beat_type, bpm);//рекомендуемая частота генератора, не работает правильно
+         show_notes(converted_notes_sequence); //вывод нот с делением на строки длиной 256 символов
+         show_octaves(converted_octaves_sequence);//вывод октав с делением на строки длиной 256 символов
+     }
+     else { //ударные
+
+         convert_to_sequence_percussion(v_instruments, v_duration);
+         show_notes(converted_notes_sequence); //вывод нот с делением на строки длиной 256 символов
+
+     }
      return 0;
 
  }
@@ -535,6 +581,21 @@ void MusicXMLReader::MusicPartWriter(const char* NamePart, const char* voice) {
      }
  }
 
+ void MusicXMLReader::convert_to_sequence_percussion(vector<string>& v_instruments, vector<float>& v_duration)
+ {
+     if (v_instruments.size() != v_duration.size()) { // если размеры не совпадают
+         throw std::invalid_argument("Sizes of vectors v_instruments and v_duration are not equal");
+     }
+     converted_notes.clear();
+     for (int i = 0; i < v_instruments.size(); i++) {
+         converted_notes.push_back(PercussionSurvivalcraftMap[PercussionPartInstruments[v_instruments[i]]]);
+     }
+     for (int i = 0; i < v_duration.size(); i++) {
+         (print_amount(converted_notes[i], v_duration[i], 0, converted_notes_sequence));
+     }
+
+ }
+
 
  void MusicXMLReader::print_amount(int object, int duration, int league, vector <int>& converted_notes_sequence) {
      for (int i = 0; i < duration; i++) {
@@ -659,7 +720,7 @@ void MusicXMLReader::MusicPartWriter(const char* NamePart, const char* voice) {
 
  void MusicXMLReader::FindMinimalDuration(const char* name)
  {
-     double min = 1;
+     double min = 999999;
      XMLElement* pRootElement = doc.RootElement(); // корневой каталог
      if (NULL != pRootElement) { // если не пустой
          XMLElement* part_id_tag = pRootElement->FirstChildElement("part");
@@ -707,4 +768,5 @@ void MusicXMLReader::MusicPartWriter(const char* NamePart, const char* voice) {
          
      minimal_duration = min;
  }
+
 

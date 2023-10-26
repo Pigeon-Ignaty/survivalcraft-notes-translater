@@ -14,14 +14,14 @@ int main() {
     cout << "Введите имя файла с расширением, либо путь до него." << endl;
     cout << "Пример: Minecraft_OST.musicxml или D:\\MIDI\\Minecraft_OST.musicxml"  << endl;
 
-    MusicXMLReader xml("Scatman_ski_ba_bop_dop_bop4.musicxml");
+    MusicXMLReader xml("Z:\\VS\\Survivalcraft-notes-translator\\survivalcraft-notes-translater\\TEMP\\4.musicxml");
 
-    xml.ReadVoice("P6");
+    xml.ReadVoice("P1");
     system("pause");
 
-    xml.MusicPartWriter("P8","1");
+    xml.MusicPartWriter("P1","2");//номер партии и голос
     //xml.OutputToConsole(); //вывод доп информации
-    xml.Translation(8);//3, 6
+    xml.Translation(4);//тип инструмента
 
     return 0;
 }
