@@ -1,4 +1,4 @@
-![Image alt](https://github.com/Pigeon-Ignaty/survivalcraft-notes-translator/image/qt_meme.jpg)
+![Image alt](https://github.com/Pigeon-Ignaty/survivalcraft-notes-translator/blob/gui/image/qt_meme.jpg)
 
 # EN Survivalcraft Notes Translator
 This program translates notes from the .musicxml format into a hexadecimal string with notes and octaves for the sound generator in Survivalcraft.
