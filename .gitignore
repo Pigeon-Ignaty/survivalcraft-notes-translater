@@ -10,9 +10,11 @@ nppBackup/
 .musicxml
 *.musicxml
 *.xml
-Translator.cpp
-Translator.h
+
 all.mid
 *.mid
 новый 5.txt
 TEMP/SC Notes Generator v2.jar
+/build-MusicAPP-Desktop_Qt_5_12_2_MinGW_32_bit-Debug
+/nppBackup
+/MusicAPP/xml
