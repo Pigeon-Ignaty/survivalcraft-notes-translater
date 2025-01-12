@@ -1,58 +1,99 @@
-<p align="center">
-  <img src="https://i.ibb.co/HhHRcy8/logo-project.png" alt="Project Logo" width="500"">
-</p>
+# The `main` branch 
+This branch was used at the start of the project and contains the initial version of the project. Currently, the branch is not being used for active development, and all new changes and developments are taking place in another branch.
+For the current version of the project, please follow the link to the [GUI branch](https://github.com/Pigeon-Ignaty/survivalcraft-notes-translator).
 
-<p align="center">
-<img src="https://img.shields.io/badge/Framework-Qt5%2FC%2B%2B-green?style=flat-square&logoColor=red"">
-<a href="https://github.com/Pigeon-Ignaty/survivalcraft-notes-translator/releases"><img src="https://img.shields.io/badge/Stable%20Version%20-%20no-red?style=flat-square&logoColor=red"></a>
-<img src="https://img.shields.io/badge/License%20-GPL%20%20-blue?style=flat-square&logoColor=red">
-<img src="https://img.shields.io/badge/OS%20-%20Windows%20-%20%238932a8?style=flat-square">
-</p>
+# EN Survivalcraft Notes Translator
+This program translates notes from the .musicxml format into a hexadecimal string with notes and octaves for the sound generator in Survivalcraft.
+___
+## Table of Contents
+- [How Survivalcraft Notes Translator Works](#how-survivalcraft-notes-translator-works)
+- [What's Implemented](#whats-implemented)
+- [What's Not Implemented](#whats-not-implemented)
+- [Changelog](#changelog)
+- [Example](#example)
+- [Project Team](#project-team)
+___
+# How Survivalcraft Notes Translator Works <a name="how-survivalcraft-notes-translator-works"></a>
 
-# About 📔
-Survivalcraft Notes Translator is a program that reads musicxml files, extracts the found parts and voices, and translates notes and octaves from the selected voice into the format of the sound generator in Survivalcraft.
+**Survivalcraft Notes Translator** is a program that reads musicxml files, extracts the found parts and voices, and translates notes and octaves from the selected voice into the format of the sound generator in Survivalcraft.
+___
 
-## Installation
-1. Download the current version [here](https://github.com/Pigeon-Ignaty/survivalcraft-notes-translator/releases)
-2. Unpack the archive to any convenient location
-3. Launch file.exe
-
-## What's Implemented 🚀<a name="whats-implemented "></a>
-- Open and read musicxml compressed and uncompressed files
-- Output of party names and their selection
-- Withdrawal of all votes in the party and their selection
-- Translation of the simplest single notes
-- Output hexadecimal notation for notes, octaves, instruments and volume
-- Instrument selection and automatic transposition of notes to the desired octave depending on the range of the instrument (the first octave is cut off for the bell, as it sounds in dissonance)
-- Determining the league and lengthening the note duration
-- Work with all major clock sizes
-- Automatic splitting into 256-character strings with 'F' characters in case the string does not reach this length.
+# What's Implemented <a name="whats-implemented"></a>
+- Opening and reading .musicxml files
+- Output of part names and selection
+- Output of all voices in a part and their selection
+- Translation of basic single notes
+- Automatic calculation of output notation for notes and octaves.
+- Selection of the instrument and automatic transposition of notes to the required octave depending on the instrument's range. (For the bell, the first octave is trimmed as it sounds dissonant)
+- Ligature detection and note duration extension
+- Handling of all common time signatures
+- Automatic line splitting at 256 characters with padding with 'F' characters if the line is less than 256 characters in length
 - Translation of percussion instruments
-  
-## What's Not Implemented 🗿<a name="whats-not-implemented "></a>
-- Opening and reading .midi files
+- ___
+# What's Not Implemented <a name="whats-not-implemented"></a>
+- Opening and reading .xml and .midi files
 - Splitting chords into separate parts and translating them
 - Translation of duoles, trioles, quartoles, quintoles, etc.
-- Translation of sound volume changes
-- No music translation for the 2.4 version of the game with the updated sound generator operation
-
-## User guide
-For detailed information on how to use the application, open the [User's guide](path to the file.html), available in HTML format. It provides instructions on how to use the program.
-
-## Acknowledgements
-- This project uses the [tinyxml2](https://github.com/leethomason/tinyxml2) library for XML parsing.
-- This project uses the [miniz](https://github.com/richgel999/miniz) library for compression and decompression.
-  
-## Author
-This project was developed by [Pigeon Ignaty](https://github.com/Pigeon-Ignaty)
-
-## Report a bug 🐛
-If you find a bug or problem in the app, please create an [issue](https://github.com/Pigeon-Ignaty/survivalcraft-notes-translator/issues) by attaching a screenshot of the error and a music file.
-
-## License
-This project is licensed under the terms of the GNU General Public License v3.0. See the [LICENSE](./LICENSE) file for details.
+- Translation of sound volume fluctuations
 ___
-## Updates List 💾<a name="changelog" ></a>
+# Example <a name="example"></a>
+
+For example:
+```
+Scatman_ski_ba_bop_dop_bop2.musicxml
+```
+The console will output the following parts:
+```
+Output of the following parts in the musical composition:
+ID: P1  Part Name: Piano
+ID: P2  Part Name: Piano
+ID: P3  Part Name: Piano
+ID: P4  Part Name: Piano
+ID: P5  Part Name: Piano
+ID: P6  Part Name: Sawtooth Synthesizer
+ID: P7  Part Name: 5-string Electric Bass Guitar
+ID: P8  Part Name: Drum Kit
+ID: P9  Part Name: Clap
+```
+The user selects a part. Let it be P1.
+Next, all voices from part P1 will be displayed:
+```
+Voices detected in the part
+1
+```
+Then the user will be prompted to select the type of instrument.
+  * *1 Bell*
+  * *2 Organ*
+  * *3 Whistle*
+  * *4 String Instrument*
+  * *5 Trumpet*
+  * *6 Vocal Doo*
+  * *7 Piano*
+  * *8 Piano with Pedal*
+<br>Next, the program will translate the selected piece and display 2 lines. If the line is longer than 256 characters, it will split them into 256-character parts. If there is a piece left that is smaller, it will pad it with 'F' characters.
+```
+Notes
+FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF1FF1FF1FF1FF1F1F5FF5FF5FF5FF5F5F3FF3FF3FF3FF3F3F3FF3FF3FF3FF3F5F1FF1FF1FF1FF1F1F5FF5FF5FF5FF5F5F3FF3FF3FF3FF3F3F3FF3FF3FF3FF3F5F1FF1FF1FF1FF1F1F5FF5FF5FF5FF5F5F3FF3FF3FF3FF3F3F3FF3FF3FF3FF3F5F1FF1FF1FF1FF1F1F5FF5FF5FF5FF5F5F
+3FF3FF3FF3FF3F3F3FF3FF3FF3FF3F5F1FF1FF1FF1FF1F1F5FF5FF5FF5FF5F5F3FF3FF3FF3FF3F3F3FF3FF3FF3FF3F5F1FF1FF1FF1FF1F1F5FF5FF5FF5FF5F5F3FF3FF3FF3FF3F3F3FF3FF3FF3FF3F5F1FF1FF1FF1FF1F1F5FF5FF5FF5FF5F5F3FF3FF3FF3FF3F3F3FF3FF3FF3FF3F5F1FF1FF1FF1FF1F1F5FF5FF5FF5FF5F5F
+3FF3FF3FF3FF3F3F3FF3FF3FF3FF3F5F1FF1FF1FF1FF1F1F5FF5FF5FF5FF5F5F3FF3FF3FF3FF3F3F3FF3FF3FF3FF3F5F1FF1FF1FF1FF1F1F5FF5FF5FF5FF5F5F3FF3FF3FF3FF3F3FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF1FF1FF1FF1FF1F1F5FF5FF5FF5FF5F5F3FF3FF3FF3FF3F3F3FF3FF3FF3FF3F5F1FF1FF1FF1FF1F1F
+5FF5FF5FF5FF5F5F3FF3FF3FF3FF3F3F3FF3FF3FF3FF3F5F1FF1FF1FF1FF1F1F5FF5FF5FF5FF5F5F3FF3FF3FF3FF3F3F3FF3FF3FF3FF3F5F1FF1FF1FF1FF1F1F5FF5FF5FF5FF5F5F3FF3FF3FF3FF3F3F3FF3FF3FF3FF3F5F1FF1FF1FF1FF1F1F5FF5FF5FF5FF5F5F3FF3FF3FF3FF3F3F3FF3FF3FF3FF3F5F1FF1FF1FF1FF1F1F
+5FF5FF5FF5FF5F5F3FF3FF3FF3FF3F3F3FF3FF3FF3FF3F5FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF1FF1FF1FF1FF1F1F5FF5FF5FF5FF5F5F3FF3FF3FF3FF3F3F3FF3FF3FF3FF3F5F1FF1FF1FF1FF1F1F5FF5FF5FF5FF5F5F3FF3FF3FF3FF3F3F3FF3FF3FF3FF3F5F1FF1FF1FF1FF1F1F5FF5FF5FF5FF5F5F3FF3FF3FF3FF3F3F
+3FF3FF3FF3FF3F5F1FF1FF1FF1FF1F1F5FF5FF5FF5FF5F5F3FF3FF3FF3FF3F3F3FF3FF3FF3FF3F5F1FF1FF1FF1FF1F1F5FF5FF5FF5FF5F5F3FF3FF3FF3FF3F3F3FF3FF3FF3FF3F5F1FF1FF1FF1FF1F1F5FF5FF5FF5FF5F5F3FF3FF3FF3FF3F3F3FF3FF3FF3FF3F5F1FF1FF1FF1FF1F1F5FF5FF5FF5FF5F5F3FF3FF3FF3FF3F3F
+3FF3FF3FF3FF3F5F1FF1FF1FF1FF1F1F5FF5FF5FF5FF5F5F3FF3FF3FF3FF3F3F3FF3FF3FF3FF3F5F1FF1FF1FF1FF1F1F5FF5FF5FF5FF5F5F3FF3FF3FF3FF3F3F3FF3FF3FF3FF3F5F1FF1FF1FF1FF1F1F5FF5FF5FF5FF5F5F3FF3FF3FF3FF3F3F3FF3FF3FF3FF3F5F1FF1FF1FF1FF1F1F5FF5FF5FF5FF5F5F3FF3FF3FF3FF3FFF
+FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+Octaves
+FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF0FF0FF0FF0FF0F0F0FF0FF0FF0FF0F0F0FF0FF0FF0FF0F0F0FF0FF0FF0FF0F0F0FF0FF0FF0FF0F0F0FF0FF0FF0FF0F0F0FF0FF0FF0FF0F0F0FF0FF0FF0FF0F0F0FF0FF0FF0FF0F0F0FF0FF0FF0FF0F0F0FF0FF0FF0FF0F0F0FF0FF0FF0FF0F0F0FF0FF0FF0FF0F0F0FF0FF0FF0FF0F0F
+0FF0FF0FF0FF0F0F0FF0FF0FF0FF0F0F0FF0FF0FF0FF0F0F0FF0FF0FF0FF0F0F0FF0FF0FF0FF0F0F0FF0FF0FF0FF0F0F0FF0FF0FF0FF0F0F0FF0FF0FF0FF0F0F0FF0FF0FF0FF0F0F0FF0FF0FF0FF0F0F0FF0FF0FF0FF0F0F0FF0FF0FF0FF0F0F0FF0FF0FF0FF0F0F0FF0FF0FF0FF0F0F0FF0FF0FF0FF0F0F0FF0FF0FF0FF0F0F
+0FF0FF0FF0FF0F0F0FF0FF0FF0FF0F0F0FF0FF0FF0FF0F0F0FF0FF0FF0FF0F0F0FF0FF0FF0FF0F0F0FF0FF0FF0FF0F0F0FF0FF0FF0FF0F0F0FF0FF0FF0FF0F0F0FF0FF0FF0FF0F0FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF0FF0FF0FF0FF0F0F0FF0FF0FF0FF0F0F0FF0FF0FF0FF0F0F0FF0FF0FF0FF0F0F0FF0FF0FF0FF0F0F
+0FF0FF0FF0FF0F0F0FF0FF0FF0FF0F0F0FF0FF0FF0FF0F0F0FF0FF0FF0FF0F0F0FF0FF0FF0FF0F0F0FF0FF0FF0FF0F0F0FF0FF0FF0FF0F0F0FF0FF0FF0FF0F0F0FF0FF0FF0FF0F0F0FF0FF0FF0FF0F0F0FF0FF0FF0FF0F0F0FF0FF0FF0FF0F0F0FF0FF0FF0FF0F0F0FF0FF0FF0FF0F0F0FF0FF0FF0FF0F0F0FF0FF0FF0FF0F0F
+0FF0FF0FF0FF0F0F0FF0FF0FF0FF0F0F0FF0FF0FF0FF0F0FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF0FF0FF0FF0FF0F0F0FF0FF0FF0FF0F0F0FF0FF0FF0FF0F0F0FF0FF0FF0FF0F0F0FF0FF0FF0FF0F0F0FF0FF0FF0FF0F0F0FF0FF0FF0FF0F0F0FF0FF0FF0FF0F0F0FF0FF0FF0FF0F0F0FF0FF0FF0FF0F0F0FF0FF0FF0FF0F0F
+0FF0FF0FF0FF0F0F0FF0FF0FF0FF0F0F0FF0FF0FF0FF0F0F0FF0FF0FF0FF0F0F0FF0FF0FF0FF0F0F0FF0FF0FF0FF0F0F0FF0FF0FF0FF0F0F0FF0FF0FF0FF0F0F0FF0FF0FF0FF0F0F0FF0FF0FF0FF0F0F0FF0FF0FF0FF0F0F0FF0FF0FF0FF0F0F0FF0FF0FF0FF0F0F0FF0FF0FF0FF0F0F0FF0FF0FF0FF0F0F0FF0FF0FF0FF0F0F
+0FF0FF0FF0FF0F0F0FF0FF0FF0FF0F0F0FF0FF0FF0FF0F0F0FF0FF0FF0FF0F0F0FF0FF0FF0FF0F0F0FF0FF0FF0FF0F0F0FF0FF0FF0FF0F0F0FF0FF0FF0FF0F0F0FF0FF0FF0FF0F0F0FF0FF0FF0FF0F0F0FF0FF0FF0FF0F0F0FF0FF0FF0FF0F0F0FF0FF0FF0FF0F0F0FF0FF0FF0FF0F0F0FF0FF0FF0FF0F0F0FF0FF0FF0FF0FFF
+FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+```
+
+___
+# Updates List <a name="changelog"></a>
 In this section, all major changes, additions, and deletions in the code are recorded.
 * 28th September 2023
     * Proper voice processing. Now, if a voice is missing in a measure, it will be automatically filled with a pause.
@@ -93,50 +134,101 @@ In this section, all major changes, additions, and deletions in the code are rec
         {"Hand Clap",9},
 ```
 ___
-# RU Survivalcraft Notes Translator 
-Survivalcraft Notes Translator - это программа, которая считывает файлы musicxml, извлекает найденные партии и голоса и переводит ноты и октавы из выбранного голоса в формат звукового генератора в Survivalcraft.
+# Ветка `main`
+Эта ветка была использована для начальной версии проекта при его старте. На данный момент она не используется для активной разработки. Все новые изменения и разработки происходят в другой ветке.
+Для получения актуальной версии проекта, пожалуйста, переходите по ссылке на ветку [GUI](https://github.com/Pigeon-Ignaty/survivalcraft-notes-translator).
+# RU Survivalcraft Notes Translator
+Эта программа переводит ноты из формата .musicxml в hex строку с нотами и октавами для генератора звука в Survivalcraft.
+___
+## Содержание
+- [Как работает Survivalcraft Notes Translator](#Survivalcraft-Notes-Translator)
+- [Что реализовано](#realized)
+- [Что не реализовано](#unrealized)
+- [Список обновлений](#updates)
+- [Пример](#Пример)
+- [Команда проекта](#команда-проекта)
+___
+# Как работает Survivalcraft Notes Translator <a name="Survivalcraft-Notes-Translator"></a>
 
-## Установка 🔧
-1. Скачайте текущую версию [здесь](https://github.com/Pigeon-Ignaty/survivalcraft-notes-translator/releases)
-2. Распакуйте архив в любое удобное для вас место
-3. Запустите file.exe
+**Survivalcraft Notes Translator** - программа, которая читает musicxml файл, выводит найденные партии и голоса, и из выбранного голоса переводит ноты и октавы в формат звукового генератора в Survivalcraft. 
+___
 
-## Что реализовано 🎹<a name="realized"></a>
-- Открытие и чтение файлов сжатых и несжатых musicxml
+# Что реализовано <a name="realized"></a>
+- Открытие и чтение файлов .musicxml
 - Вывод названий партий и их выбор
 - Вывод всех голосов в партии и их выбор
 - Перевод простейших одиночных нот
-- Вывод шестнадцатеричной записи для нот, октав, инструментов и громкости
-- Выбор инструмента и автоматическое транспонирование нот на нужную октаву в зависимости от диапазона инструмента (для колокольчика обрезана первая октава, так как она звучит в диссонанс)
+- Автоматический расчёт выходной записи для нот и октав.
+- Выбор инструмента и автоматическое транспонирование нот на нужную октаву в зависимости от диапазона инструмента. (Для колокольчика обрезана первая октава, так как она звучит в диссонанс)
 - Определение лиги и удлинение длительности ноты
 - Работа со всеми основными размерами тактов
-- Автоматическое разбиение на строки по 256 символов с заполнением символами 'F' в случае, если строка не достигает этой длины
+- Автоматическое разбиение на строки по 256 символов с заполнением символами 'F' в случае, если строка не достигает 256 символов в длину
 - Перевод ударных инструментов
-
-## Что не реализовано <a name="unrealized"></a>
-- Открытие и чтение .midi файлов
-- Разбиение аккордов на отдельные партии и их перевод
+- ___
+# Что не реализовано <a name="unrealized"></a>
+- Открытие и чтение файлов .xml и .midi файлов
+- Разбитие аккордов на отдельные партии и их перевод
 - Перевод дуолей, триолей, квартолей, квинтолей и т. д.
-- Перевод изменения громкости звука
-- Отсутствие перевода музыки для версии игры 2.4 с обновлённой работой генератора звука
-  
-## Руководство пользователя 
-Для получения подробной информации о том, как использовать приложение, откройте [руководство пользователя](путь_к_файлу.html), доступное в формате HTML. В нем представлены инструкции по использованию программы.
-
-## Используемые библиотеки 📚
-- [tinyxml2](https://github.com/leethomason/tinyxml2) — для парсинга XML.
-- [miniz](https://github.com/richgel999/miniz) — для работы с архивами.
-  
-## Автор
-Этот проект был разработан [Pigeon Ignaty](https://github.com/Pigeon-Ignaty)
-
-## Сообщить о жуке (баге) ⚠️
-Если вы нашли баг или проблему в приложении, пожалуйста, создайте [issue](https://github.com/Pigeon-Ignaty/survivalcraft-notes-translator/issues), прикрепив скриншот ошибки и музыкальный файл.
-
-## Лицензия
-Этот проект лицензирован на условиях GNU General Public License версии 3.0. Смотрите файл [ЛИЦЕНЗИЯ](./LICENSE) для получения дополнительной информации.
+- Перевод колебаний громкости звука
 ___
-## Список обновлений 📋<a name="updates"></a>
+# Пример <a name="Пример"></a>
+
+К примеру такой:
+```
+Scatman_ski_ba_bop_dop_bop2.musicxml
+```
+Консоль выведет следующие партии:
+```
+Вывод следующих партий в му	зыкальной композиции:
+ID: P1  Название партии: Фортепиано
+ID: P2  Название партии: Фортепиано
+ID: P3  Название партии: Фортепиано
+ID: P4  Название партии: Фортепиано
+ID: P5  Название партии: Фортепиано
+ID: P6  Название партии: Синтезатор пилообразной волны
+ID: P7  Название партии: 5-стр. Электрическая бас-гитара
+ID: P8  Название партии: Набор ударных
+ID: P9  Название партии: Хлопок в ладоши
+```
+Пользователь выбирает партию. Пусть P1
+Далее произойдёт вывод всех голосов из партии P1:
+```
+Голоса, обнаруженные в партии
+1
+```
+Затем пользователю будет предложено выбрать тип инструмента. 
+  * *1 Колокольчик*
+  * *2 Орган*
+  * *3 Свисток*
+  * *4 Струнный инструмент*
+  * *5 Труба*
+  * *6 Вокальное ду*
+  * *7 Фортепиано*
+  * *8 Фортепиано c нажатой педалью*
+<br>Далее программа переведёт выбранный кусок и выведет 2 строки. Если строка больше 256 символов, то она разделит их по 256. Если останется кусок меньше, то дополнит символами F
+```
+Ноты
+FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF1FF1FF1FF1FF1F1F5FF5FF5FF5FF5F5F3FF3FF3FF3FF3F3F3FF3FF3FF3FF3F5F1FF1FF1FF1FF1F1F5FF5FF5FF5FF5F5F3FF3FF3FF3FF3F3F3FF3FF3FF3FF3F5F1FF1FF1FF1FF1F1F5FF5FF5FF5FF5F5F3FF3FF3FF3FF3F3F3FF3FF3FF3FF3F5F1FF1FF1FF1FF1F1F5FF5FF5FF5FF5F5F
+3FF3FF3FF3FF3F3F3FF3FF3FF3FF3F5F1FF1FF1FF1FF1F1F5FF5FF5FF5FF5F5F3FF3FF3FF3FF3F3F3FF3FF3FF3FF3F5F1FF1FF1FF1FF1F1F5FF5FF5FF5FF5F5F3FF3FF3FF3FF3F3F3FF3FF3FF3FF3F5F1FF1FF1FF1FF1F1F5FF5FF5FF5FF5F5F3FF3FF3FF3FF3F3F3FF3FF3FF3FF3F5F1FF1FF1FF1FF1F1F5FF5FF5FF5FF5F5F
+3FF3FF3FF3FF3F3F3FF3FF3FF3FF3F5F1FF1FF1FF1FF1F1F5FF5FF5FF5FF5F5F3FF3FF3FF3FF3F3F3FF3FF3FF3FF3F5F1FF1FF1FF1FF1F1F5FF5FF5FF5FF5F5F3FF3FF3FF3FF3F3FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF1FF1FF1FF1FF1F1F5FF5FF5FF5FF5F5F3FF3FF3FF3FF3F3F3FF3FF3FF3FF3F5F1FF1FF1FF1FF1F1F
+5FF5FF5FF5FF5F5F3FF3FF3FF3FF3F3F3FF3FF3FF3FF3F5F1FF1FF1FF1FF1F1F5FF5FF5FF5FF5F5F3FF3FF3FF3FF3F3F3FF3FF3FF3FF3F5F1FF1FF1FF1FF1F1F5FF5FF5FF5FF5F5F3FF3FF3FF3FF3F3F3FF3FF3FF3FF3F5F1FF1FF1FF1FF1F1F5FF5FF5FF5FF5F5F3FF3FF3FF3FF3F3F3FF3FF3FF3FF3F5F1FF1FF1FF1FF1F1F
+5FF5FF5FF5FF5F5F3FF3FF3FF3FF3F3F3FF3FF3FF3FF3F5FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF1FF1FF1FF1FF1F1F5FF5FF5FF5FF5F5F3FF3FF3FF3FF3F3F3FF3FF3FF3FF3F5F1FF1FF1FF1FF1F1F5FF5FF5FF5FF5F5F3FF3FF3FF3FF3F3F3FF3FF3FF3FF3F5F1FF1FF1FF1FF1F1F5FF5FF5FF5FF5F5F3FF3FF3FF3FF3F3F
+3FF3FF3FF3FF3F5F1FF1FF1FF1FF1F1F5FF5FF5FF5FF5F5F3FF3FF3FF3FF3F3F3FF3FF3FF3FF3F5F1FF1FF1FF1FF1F1F5FF5FF5FF5FF5F5F3FF3FF3FF3FF3F3F3FF3FF3FF3FF3F5F1FF1FF1FF1FF1F1F5FF5FF5FF5FF5F5F3FF3FF3FF3FF3F3F3FF3FF3FF3FF3F5F1FF1FF1FF1FF1F1F5FF5FF5FF5FF5F5F3FF3FF3FF3FF3F3F
+3FF3FF3FF3FF3F5F1FF1FF1FF1FF1F1F5FF5FF5FF5FF5F5F3FF3FF3FF3FF3F3F3FF3FF3FF3FF3F5F1FF1FF1FF1FF1F1F5FF5FF5FF5FF5F5F3FF3FF3FF3FF3F3F3FF3FF3FF3FF3F5F1FF1FF1FF1FF1F1F5FF5FF5FF5FF5F5F3FF3FF3FF3FF3F3F3FF3FF3FF3FF3F5F1FF1FF1FF1FF1F1F5FF5FF5FF5FF5F5F3FF3FF3FF3FF3FFF
+FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+Октавы
+FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF0FF0FF0FF0FF0F0F0FF0FF0FF0FF0F0F0FF0FF0FF0FF0F0F0FF0FF0FF0FF0F0F0FF0FF0FF0FF0F0F0FF0FF0FF0FF0F0F0FF0FF0FF0FF0F0F0FF0FF0FF0FF0F0F0FF0FF0FF0FF0F0F0FF0FF0FF0FF0F0F0FF0FF0FF0FF0F0F0FF0FF0FF0FF0F0F0FF0FF0FF0FF0F0F0FF0FF0FF0FF0F0F
+0FF0FF0FF0FF0F0F0FF0FF0FF0FF0F0F0FF0FF0FF0FF0F0F0FF0FF0FF0FF0F0F0FF0FF0FF0FF0F0F0FF0FF0FF0FF0F0F0FF0FF0FF0FF0F0F0FF0FF0FF0FF0F0F0FF0FF0FF0FF0F0F0FF0FF0FF0FF0F0F0FF0FF0FF0FF0F0F0FF0FF0FF0FF0F0F0FF0FF0FF0FF0F0F0FF0FF0FF0FF0F0F0FF0FF0FF0FF0F0F0FF0FF0FF0FF0F0F
+0FF0FF0FF0FF0F0F0FF0FF0FF0FF0F0F0FF0FF0FF0FF0F0F0FF0FF0FF0FF0F0F0FF0FF0FF0FF0F0F0FF0FF0FF0FF0F0F0FF0FF0FF0FF0F0F0FF0FF0FF0FF0F0F0FF0FF0FF0FF0F0FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF0FF0FF0FF0FF0F0F0FF0FF0FF0FF0F0F0FF0FF0FF0FF0F0F0FF0FF0FF0FF0F0F0FF0FF0FF0FF0F0F
+0FF0FF0FF0FF0F0F0FF0FF0FF0FF0F0F0FF0FF0FF0FF0F0F0FF0FF0FF0FF0F0F0FF0FF0FF0FF0F0F0FF0FF0FF0FF0F0F0FF0FF0FF0FF0F0F0FF0FF0FF0FF0F0F0FF0FF0FF0FF0F0F0FF0FF0FF0FF0F0F0FF0FF0FF0FF0F0F0FF0FF0FF0FF0F0F0FF0FF0FF0FF0F0F0FF0FF0FF0FF0F0F0FF0FF0FF0FF0F0F0FF0FF0FF0FF0F0F
+0FF0FF0FF0FF0F0F0FF0FF0FF0FF0F0F0FF0FF0FF0FF0F0FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF0FF0FF0FF0FF0F0F0FF0FF0FF0FF0F0F0FF0FF0FF0FF0F0F0FF0FF0FF0FF0F0F0FF0FF0FF0FF0F0F0FF0FF0FF0FF0F0F0FF0FF0FF0FF0F0F0FF0FF0FF0FF0F0F0FF0FF0FF0FF0F0F0FF0FF0FF0FF0F0F0FF0FF0FF0FF0F0F
+0FF0FF0FF0FF0F0F0FF0FF0FF0FF0F0F0FF0FF0FF0FF0F0F0FF0FF0FF0FF0F0F0FF0FF0FF0FF0F0F0FF0FF0FF0FF0F0F0FF0FF0FF0FF0F0F0FF0FF0FF0FF0F0F0FF0FF0FF0FF0F0F0FF0FF0FF0FF0F0F0FF0FF0FF0FF0F0F0FF0FF0FF0FF0F0F0FF0FF0FF0FF0F0F0FF0FF0FF0FF0F0F0FF0FF0FF0FF0F0F0FF0FF0FF0FF0F0F
+0FF0FF0FF0FF0F0F0FF0FF0FF0FF0F0F0FF0FF0FF0FF0F0F0FF0FF0FF0FF0F0F0FF0FF0FF0FF0F0F0FF0FF0FF0FF0F0F0FF0FF0FF0FF0F0F0FF0FF0FF0FF0F0F0FF0FF0FF0FF0F0F0FF0FF0FF0FF0F0F0FF0FF0FF0FF0F0F0FF0FF0FF0FF0F0F0FF0FF0FF0FF0F0F0FF0FF0FF0FF0F0F0FF0FF0FF0FF0F0F0FF0FF0FF0FF0FFF
+FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+```
+
+___
+# Список обновлений <a name="updates"></a>
 В этом разделе фиксируются все основные изменения, добавления и удаления в коде.
 * 28.09.23
     * Правильная обработка голоса. Теперь, если в такте отсутствует необходимый голос, он будет автоматически заполнен паузой.
